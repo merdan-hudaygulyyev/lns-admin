@@ -1,0 +1,69 @@
+name: lns-admin
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: admin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      API_PREFIX: /api/v1
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/admin
+      JWT_SECRET: ${JWT_SECRET:-dev-only-jwt-secret-change-me-please-1234567890}
+      JWT_EXPIRES_IN: 45m
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+      PASSPORT_HASH_KEY: ${PASSPORT_HASH_KEY:-fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210}
+      BCRYPT_ROUNDS: 12
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      COOKIE_DOMAIN: ${COOKIE_DOMAIN:-}
+      COOKIE_SAME_SITE: ${COOKIE_SAME_SITE:-lax}
+      UPLOAD_DIR: uploads
+      MAX_FILE_SIZE_MB: 10
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@12345}
+      ADMIN_FULL_NAME: ${ADMIN_FULL_NAME:-Default Administrator}
+    ports:
+      - "4000:4000"
+    volumes:
+      - uploads:/app/uploads
+    command: sh -c "npm run db:migrate:dist && npm run db:seed:dist && node dist/server.js"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+        NEXT_PUBLIC_API_ORIGIN: ${NEXT_PUBLIC_API_ORIGIN:-http://localhost:4000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+      NEXT_PUBLIC_API_ORIGIN: ${NEXT_PUBLIC_API_ORIGIN:-http://localhost:4000}
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  uploads:

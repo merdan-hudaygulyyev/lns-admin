@@ -1,0 +1,235 @@
+{
+  "common": {
+    "appName": "LNS Admin",
+    "adminPanel": "Dolandyryş paneli",
+    "back": "Yza",
+    "cancel": "Ýatyr",
+    "delete": "Poz",
+    "edit": "Üýtget",
+    "save": "Üýtgeşmeleri sakla",
+    "saving": "Saklanýar...",
+    "create": "Döret",
+    "creating": "Döredilýär...",
+    "close": "Ýap",
+    "search": "Gözle",
+    "reset": "Täzeden",
+    "loading": "Ýüklenýär...",
+    "actions": "Hereketler",
+    "all": "Hemmesi",
+    "unknown": "Nämälim",
+    "retry": "Gaýtadan synanyş"
+  },
+  "nav": {
+    "members": "Agzalar",
+    "profile": "Profil",
+    "logout": "Çykmak",
+    "collapse": "Menýuny ýap",
+    "expand": "Menýuny aç",
+    "openMenu": "Menýuny aç",
+    "closeMenu": "Menýuny ýap",
+    "section": "Iş meýdany"
+  },
+  "login": {
+    "title": "Gaýtadan hoş geldiňiz",
+    "subtitle": "LNS agzalaryny dolandyrmak üçin giriň.",
+    "username": "Ulanyjy ady ýa-da email",
+    "password": "Parol",
+    "usernamePlaceholder": "admin",
+    "passwordPlaceholder": "Parolyňyzy giriziň",
+    "showPassword": "Paroly görkez",
+    "hidePassword": "Paroly gizle",
+    "submit": "Girmek",
+    "submitting": "Girilýär...",
+    "errorTitle": "Girip bolmady",
+    "footer": "Giriş çäklendirilen. Diňe ygtyýarly administratörler."
+  },
+  "theme": {
+    "title": "Tema",
+    "light": "Ýagty",
+    "dark": "Garaňky",
+    "system": "Ulgam"
+  },
+  "language": {
+    "title": "Dil",
+    "tk": "Türkçe",
+    "ru": "Русский",
+    "tm": "Türkmençe"
+  },
+  "members": {
+    "title": "Agzalar",
+    "subtitle": "Ýazgylary, resminamalary we tölegleri dolandyryň.",
+    "add": "Agza goş",
+    "searchPlaceholder": "Ad, ulanyjy ady, email, telefon, pasport boýunça gözle...",
+    "filtersTitle": "Süzgüçler",
+    "showFilters": "Süzgüçleri görkez",
+    "hideFilters": "Süzgüçleri gizle",
+    "resetFilters": "Süzgüçleri täzeden",
+    "sortBy": "Tertiple",
+    "sort": {
+      "created_at": "Döredilen senesi",
+      "full_name": "Doly ady",
+      "amount": "Mukdary",
+      "registration_date": "Hasaba alnan senesi",
+      "asc": "Artýan",
+      "desc": "Azalýan"
+    },
+    "table": {
+      "image": "Surat",
+      "username": "Ulanyjy ady",
+      "fullName": "Doly ady",
+      "email": "Email",
+      "phone": "Telefon",
+      "product": "Önüm",
+      "amount": "Mukdary",
+      "registrationDate": "Hasaba alnan",
+      "actions": "Hereketler",
+      "view": "Jikme-jiklikler",
+      "edit": "Agzany üýtget",
+      "delete": "Agzany poz"
+    },
+    "filters": {
+      "currency": "Walýuta",
+      "product": "Önüm",
+      "inviter": "Çakyryjy",
+      "amountMin": "Iň az mukdar",
+      "amountMax": "Iň köp mukdar",
+      "registrationFrom": "Hasaba alnan senesinden",
+      "registrationTo": "Hasaba alnan senesine çenli",
+      "birthFrom": "Doglan senesinden",
+      "birthTo": "Doglan senesine çenli",
+      "allCurrencies": "Ähli walýutalar"
+    },
+    "pagination": {
+      "rowsPerPage": "Sahypadaky setirler",
+      "showing": "{total}-dan {from}-{to} görkezildi",
+      "pageOf": "Sahypa {page} / {total}"
+    },
+    "empty": {
+      "title": "Agza tapylmady",
+      "description": "Gözlegi ýa-da süzgüçleri üýtgediň, ýa-da täze agza goşuň."
+    },
+    "error": {
+      "title": "Agzalar ýüklenip bilinmedi",
+      "description": "Maglumatlar alnanda ýalňyşlyk ýüze çykdy."
+    },
+    "delete": {
+      "title": "Agzany poz",
+      "message": "{name} agzasyny pozmak isleýäňizmi? Bu hereketi yzyna gaýtaryp bolmaz.",
+      "cancel": "Ýatyr",
+      "confirm": "Agzany poz",
+      "deleting": "Pozulýar..."
+    },
+    "toasts": {
+      "created": "Agza üstünlikli döredildi",
+      "updated": "Agza üstünlikli üýtgedildi",
+      "deleted": "Agza üstünlikli pozyldy",
+      "createFailed": "Agza döredilip bilinmedi",
+      "updateFailed": "Agza üýtgedilip bilinmedi",
+      "deleteFailed": "Agza pozylyp bilinmedi"
+    }
+  },
+  "memberForm": {
+    "createTitle": "Täze agza",
+    "createSubtitle": "Agzany hasaba almak üçin ähli meýdanlary dolduryň.",
+    "editTitle": "Agzany üýtgetmek",
+    "editSubtitle": "Parol meýdanlaryny boş goýsaňyz, häzirki bahalar saklanar.",
+    "image": {
+      "title": "Agzanyň suraty",
+      "hint": "Suraty bu ýere süýrüň ýa-da saýlamak üçin basyň. JPG, PNG, WEBP, SVG we beýleki formatlar, iň ýokary 10 MB.",
+      "dropHere": "Suraty bu ýere goýuň",
+      "browse": "Faýl saýla",
+      "change": "Suraty üýtget",
+      "remove": "Aýyr",
+      "preview": "Öňünden görüş",
+      "required": "Surat zerur"
+    },
+    "sections": {
+      "account": "Hasap",
+      "personal": "Şahsy maglumatlar",
+      "security": "Howpsuzlyk",
+      "contact": "Aragatnaşyk",
+      "registration": "Hasaba alyş"
+    },
+    "passwordHint": "Azyndan 8 harp. Paroly üýtgetmezlik üçin boş goýuň.",
+    "pinHint": "4-12 san. PIN-i üýtgetmezlik üçin boş goýuň.",
+    "secretHint": "Häzirki jogaby saklamak üçin boş goýuň.",
+    "submitCreate": "Agza döret",
+    "submitSave": "Üýtgeşmeleri sakla",
+    "submitting": "Ugadylýar...",
+    "cancel": "Ýatyr",
+    "errorTitle": "Bellenen meýdanlary düzediň",
+    "toasts": {
+      "created": "Agza üstünlikli döredildi",
+      "updated": "Agza üstünlikli üýtgedildi",
+      "error": "Agza saklanyp bilinmedi"
+    }
+  },
+  "memberDetails": {
+    "title": "Agzanyň maglumaty",
+    "subtitle": "{name} üçin doly ýazgy",
+    "edit": "Üýtget",
+    "delete": "Poz",
+    "backToList": "Agzalaryň sanawyna",
+    "photo": "Surat",
+    "fieldsTitle": "Hasaba alyş maglumaty",
+    "passportNote": "Pasportyň doly belgisi diňe bu sahypada görkezilýär.",
+    "loading": "Agza ýüklenýär..."
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Giren administratör barada maglumat.",
+    "id": "Administratör ID",
+    "email": "Email",
+    "fullName": "Doly ady",
+    "createdAt": "Agza bolan wagty",
+    "loading": "Profil ýüklenýär..."
+  },
+  "fields": {
+    "id": "ID",
+    "createdAt": "Döredilen wagty",
+    "username": "Ulanyjy ady",
+    "password": "Parol",
+    "fullName": "Doly ady",
+    "motherName": "Ejesiniň ady",
+    "heir": "Miraskär / peýdalanýan",
+    "passportNumber": "Pasport belgisi",
+    "birthDate": "Doglan senesi",
+    "secretQuestion": "Gizlin sorag",
+    "secretAnswer": "Gizlin jogap",
+    "email": "Email",
+    "pinCode": "PIN kody",
+    "phone": "Telefon",
+    "inviter": "Çakyryjy",
+    "product": "Önüm",
+    "address": "Salgy",
+    "postalIndex": "Poçta indeksi",
+    "officialSite": "Resmi saýt",
+    "registrationDate": "Hasaba alnan senesi",
+    "amount": "Mukdary",
+    "currency": "Walýuta",
+    "image": "Surat"
+  },
+  "validation": {
+    "required": "{field} zerur",
+    "min": "{field} azyndan {min} harp bolmaly",
+    "max": "{field} iň köp {max} harp bolmaly",
+    "email": "Dogry email giriziň",
+    "url": "Dogry URL giriziň, mysal üçin https://example.com",
+    "date": "YYYY-AA-GG formatyny ulanyň",
+    "phone": "Halkara formatyny ulanyň, mysal üçin +905551234567",
+    "positive": "{field} 0-dan uly bolmaly",
+    "numeric": "{field} san bolmaly",
+    "digits": "{field} 4-12 san bolmaly",
+    "imageRequired": "Surat ýükläň",
+    "imageType": "Diňe surat faýllary rugsat berilýär",
+    "imageSize": "Suratyň ululygy 10 MB-dan kiçi bolmaly",
+    "invalid": "Nädogry {field}"
+  },
+  "errors": {
+    "generic": "Ýalňyşlyk ýüze çykdy. Gaýtadan synanyşyň.",
+    "unauthorized": "Sessiňiz tamamlandy. Gaýtadan giriň.",
+    "notFound": "Soralan ýazgy tapylmady.",
+    "validationTitle": "Barlagdan geçip bilmedi",
+    "network": "Serwere ýetip bolmaýar. Birikmäňizi barlaň."
+  }
+}

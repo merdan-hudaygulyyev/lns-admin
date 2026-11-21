@@ -1,0 +1,235 @@
+{
+  "common": {
+    "appName": "LNS Admin",
+    "adminPanel": "Yönetim paneli",
+    "back": "Geri",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "save": "Değişiklikleri kaydet",
+    "saving": "Kaydediliyor...",
+    "create": "Oluştur",
+    "creating": "Oluşturuluyor...",
+    "close": "Kapat",
+    "search": "Ara",
+    "reset": "Sıfırla",
+    "loading": "Yükleniyor...",
+    "actions": "İşlemler",
+    "all": "Tümü",
+    "unknown": "Bilinmiyor",
+    "retry": "Tekrar dene"
+  },
+  "nav": {
+    "members": "Üyeler",
+    "profile": "Profil",
+    "logout": "Çıkış",
+    "collapse": "Kenar çubuğunu daralt",
+    "expand": "Kenar çubuğunu genişlet",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "section": "Çalışma alanı"
+  },
+  "login": {
+    "title": "Tekrar hoş geldiniz",
+    "subtitle": "LNS üyelerini yönetmek için giriş yapın.",
+    "username": "Kullanıcı adı veya e-posta",
+    "password": "Şifre",
+    "usernamePlaceholder": "admin",
+    "passwordPlaceholder": "Şifrenizi girin",
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle",
+    "submit": "Giriş yap",
+    "submitting": "Giriş yapılıyor...",
+    "errorTitle": "Giriş yapılamadı",
+    "footer": "Erişim kısıtlıdır. Yalnızca yetkili yöneticiler."
+  },
+  "theme": {
+    "title": "Tema",
+    "light": "Açık",
+    "dark": "Koyu",
+    "system": "Sistem"
+  },
+  "language": {
+    "title": "Dil",
+    "tk": "Türkçe",
+    "ru": "Русский",
+    "tm": "Türkmençe"
+  },
+  "members": {
+    "title": "Üyeler",
+    "subtitle": "Kayıtları, belgeleri ve ödemeleri yönetin.",
+    "add": "Üye ekle",
+    "searchPlaceholder": "Ad, kullanıcı adı, e-posta, telefon, pasaport ile ara...",
+    "filtersTitle": "Filtreler",
+    "showFilters": "Filtreleri göster",
+    "hideFilters": "Filtreleri gizle",
+    "resetFilters": "Filtreleri sıfırla",
+    "sortBy": "Sıralama",
+    "sort": {
+      "created_at": "Oluşturulma tarihi",
+      "full_name": "Ad soyad",
+      "amount": "Tutar",
+      "registration_date": "Kayıt tarihi",
+      "asc": "Artan",
+      "desc": "Azalan"
+    },
+    "table": {
+      "image": "Fotoğraf",
+      "username": "Kullanıcı adı",
+      "fullName": "Ad soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "product": "Ürün",
+      "amount": "Tutar",
+      "registrationDate": "Kayıt tarihi",
+      "actions": "İşlemler",
+      "view": "Detayları görüntüle",
+      "edit": "Üyeyi düzenle",
+      "delete": "Üyeyi sil"
+    },
+    "filters": {
+      "currency": "Para birimi",
+      "product": "Ürün",
+      "inviter": "Davet eden",
+      "amountMin": "Minimum tutar",
+      "amountMax": "Maksimum tutar",
+      "registrationFrom": "Kayıt tarihi (başlangıç)",
+      "registrationTo": "Kayıt tarihi (bitiş)",
+      "birthFrom": "Doğum tarihi (başlangıç)",
+      "birthTo": "Doğum tarihi (bitiş)",
+      "allCurrencies": "Tüm para birimleri"
+    },
+    "pagination": {
+      "rowsPerPage": "Sayfa başına satır",
+      "showing": "{total} kayıttan {from}-{to} arası gösteriliyor",
+      "pageOf": "Sayfa {page} / {total}"
+    },
+    "empty": {
+      "title": "Üye bulunamadı",
+      "description": "Aramanızı veya filtreleri değiştirin ya da yeni bir üye ekleyin."
+    },
+    "error": {
+      "title": "Üyeler yüklenemedi",
+      "description": "Liste alınırken bir hata oluştu."
+    },
+    "delete": {
+      "title": "Üyeyi sil",
+      "message": "{name} adlı üyeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "cancel": "İptal",
+      "confirm": "Üyeyi sil",
+      "deleting": "Siliniyor..."
+    },
+    "toasts": {
+      "created": "Üye başarıyla oluşturuldu",
+      "updated": "Üye başarıyla güncellendi",
+      "deleted": "Üye başarıyla silindi",
+      "createFailed": "Üye oluşturulamadı",
+      "updateFailed": "Üye güncellenemedi",
+      "deleteFailed": "Üye silinemedi"
+    }
+  },
+  "memberForm": {
+    "createTitle": "Yeni üye",
+    "createSubtitle": "Üyeyi kaydetmek için tüm zorunlu alanları doldurun.",
+    "editTitle": "Üyeyi düzenle",
+    "editSubtitle": "Mevcut değeri korumak için şifre alanlarını boş bırakın.",
+    "image": {
+      "title": "Üye fotoğrafı",
+      "hint": "Bir görsel sürükleyip bırakın veya seçmek için tıklayın. JPG, PNG, WEBP, SVG ve diğer formatlar, en fazla 10 MB.",
+      "dropHere": "Görseli buraya bırakın",
+      "browse": "Dosya seç",
+      "change": "Fotoğrafı değiştir",
+      "remove": "Kaldır",
+      "preview": "Önizleme",
+      "required": "Fotoğraf zorunludur"
+    },
+    "sections": {
+      "account": "Hesap",
+      "personal": "Kişisel bilgiler",
+      "security": "Güvenlik",
+      "contact": "İletişim",
+      "registration": "Kayıt"
+    },
+    "passwordHint": "En az 8 karakter. Şifreyi değiştirmemek için boş bırakın.",
+    "pinHint": "4-12 rakam. PIN'i değiştirmemek için boş bırakın.",
+    "secretHint": "Mevcut cevabı korumak için boş bırakın.",
+    "submitCreate": "Üye oluştur",
+    "submitSave": "Değişiklikleri kaydet",
+    "submitting": "Gönderiliyor...",
+    "cancel": "İptal",
+    "errorTitle": "Lütfen işaretli alanları düzeltin",
+    "toasts": {
+      "created": "Üye başarıyla oluşturuldu",
+      "updated": "Üye başarıyla güncellendi",
+      "error": "Üye kaydedilemedi"
+    }
+  },
+  "memberDetails": {
+    "title": "Üye detayları",
+    "subtitle": "{name} için tam kayıt",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "backToList": "Üye listesine dön",
+    "photo": "Fotoğraf",
+    "fieldsTitle": "Kayıt bilgileri",
+    "passportNote": "Pasaport numarasının tamamı yalnızca bu sayfada gösterilir.",
+    "loading": "Üye yükleniyor..."
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Oturum açmış yönetici hakkında bilgi.",
+    "id": "Yönetici kimliği",
+    "email": "E-posta",
+    "fullName": "Ad soyad",
+    "createdAt": "Kayıt tarihi",
+    "loading": "Profil yükleniyor..."
+  },
+  "fields": {
+    "id": "Kimlik",
+    "createdAt": "Oluşturulma tarihi",
+    "username": "Kullanıcı adı",
+    "password": "Şifre",
+    "fullName": "Ad soyad",
+    "motherName": "Annenin adı",
+    "heir": "Mirasçı / yararlanıcı",
+    "passportNumber": "Pasaport numarası",
+    "birthDate": "Doğum tarihi",
+    "secretQuestion": "Gizli soru",
+    "secretAnswer": "Gizli cevap",
+    "email": "E-posta",
+    "pinCode": "PIN kodu",
+    "phone": "Telefon",
+    "inviter": "Davet eden",
+    "product": "Ürün",
+    "address": "Adres",
+    "postalIndex": "Posta kodu",
+    "officialSite": "Resmî site",
+    "registrationDate": "Kayıt tarihi",
+    "amount": "Tutar",
+    "currency": "Para birimi",
+    "image": "Fotoğraf"
+  },
+  "validation": {
+    "required": "{field} alanı zorunludur",
+    "min": "{field} en az {min} karakter olmalıdır",
+    "max": "{field} en fazla {max} karakter olabilir",
+    "email": "Geçerli bir e-posta adresi girin",
+    "url": "Geçerli bir URL girin, örn. https://ornek.com",
+    "date": "YYYY-AA-GG biçimini kullanın",
+    "phone": "Uluslararası biçimi kullanın, örn. +905551234567",
+    "positive": "{field} 0'dan büyük olmalıdır",
+    "numeric": "{field} bir sayı olmalıdır",
+    "digits": "{field} 4-12 rakam içermelidir",
+    "imageRequired": "Lütfen bir fotoğraf yükleyin",
+    "imageType": "Yalnızca görsel dosyalarına izin verilir",
+    "imageSize": "Görsel 10 MB'dan küçük olmalıdır",
+    "invalid": "Geçersiz {field}"
+  },
+  "errors": {
+    "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "unauthorized": "Oturumunuz sona erdi. Lütfen tekrar giriş yapın.",
+    "notFound": "İstenen kayıt bulunamadı.",
+    "validationTitle": "Doğrulama başarısız",
+    "network": "Sunucuya ulaşılamıyor. Bağlantınızı kontrol edin."
+  }
+}
