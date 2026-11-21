@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef } from "react";
@@ -33,6 +33,7 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
   const validation = useTranslations("validation");
   const common = useTranslations("common");
   const router = useRouter();
+  const queryClient = useQueryClient();
   const isEdit = mode === "edit";
 
   const initialValues = useMemo<MemberFormValues>(
@@ -118,8 +119,12 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
   const mutation = useMutation({
     mutationFn: (values: MemberFormValues) =>
       isEdit && memberId ? updateMember(memberId, values) : createMember(values),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(isEdit ? t("toasts.updated") : t("toasts.created"));
+      await queryClient.invalidateQueries({ queryKey: ["members"] });
+      if (memberId) {
+        await queryClient.invalidateQueries({ queryKey: ["member", memberId] });
+      }
       router.push(ROUTES.members);
       router.refresh();
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { deleteMember } from "../../api/services/members";
@@ -18,14 +18,16 @@ export function DeleteMemberModal({ member, onClose, onDeleted }: DeleteMemberMo
   const t = useTranslations("members.delete");
   const toasts = useTranslations("members.toasts");
   const common = useTranslations("common");
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (id: string) => deleteMember(id),
-    onSuccess: async () => {
-      const id = member?.id;
+    onSuccess: async (_data, id) => {
       toast.success(toasts("deleted"));
+      await queryClient.invalidateQueries({ queryKey: ["members"] });
+      queryClient.removeQueries({ queryKey: ["member", id] });
       onClose();
-      if (id) onDeleted?.(id);
+      onDeleted?.(id);
     },
     onError: (error: unknown) => {
       toast.error(getErrorMessage(error, toasts("deleteFailed")));

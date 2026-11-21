@@ -35,7 +35,7 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/admin
 JWT_SECRET=change-this-to-a-long-random-value
 ENCRYPTION_KEY=<64-hex-chars>
 PASSPORT_HASH_KEY=<different-64-hex-chars>
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:3000,http://127.0.0.1:3000
 COOKIE_DOMAIN=
 COOKIE_SAME_SITE=lax
 ```

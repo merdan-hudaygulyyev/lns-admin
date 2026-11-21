@@ -329,7 +329,7 @@ ADMIN_EMAIL=admin@example.com
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=Admin@12345
 ADMIN_FULL_NAME=Default Administrator
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:3000,http://127.0.0.1:3000
 COOKIE_DOMAIN=
 COOKIE_SAME_SITE=lax
 NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
@@ -700,7 +700,7 @@ Then repeat the full [manual frontend checklist](#7-manual-frontend-test-checkli
 | `ENCRYPTION_KEY` | yes | Exactly 64 hex chars (AES-256-GCM) |
 | `PASSPORT_HASH_KEY` | yes | Exactly 64 hex chars, different from `ENCRYPTION_KEY` |
 | `BCRYPT_ROUNDS` | no | `12`–`16` |
-| `CORS_ORIGIN` | yes | Comma-separated frontend origins |
+| `CORS_ORIGIN` | yes | Comma-separated frontend origins; include every host you open, e.g. `http://localhost:3000,http://127.0.0.1:3000` |
 | `COOKIE_DOMAIN` | no | Empty locally; `.example.com` for sibling subdomains |
 | `COOKIE_SAME_SITE` | no | `lax`, `none`, or `strict` |
 | `UPLOAD_DIR` | no | `uploads`; must be on persistent storage |
@@ -725,6 +725,7 @@ Then repeat the full [manual frontend checklist](#7-manual-frontend-test-checkli
 | Port `3000`, `4000`, or `5432` already in use | Stop the conflicting service or change the published ports in `docker-compose.yml`. |
 | DBeaver cannot connect | Use host `localhost`, port `5432`, database `admin`, user `postgres`, password from `POSTGRES_PASSWORD`. Run `docker compose ps` to confirm Postgres is Up/healthy. |
 | Login works on localhost but not after deployment | Check `CORS_ORIGIN`, `NEXT_PUBLIC_API_URL`, `COOKIE_DOMAIN`, and `COOKIE_SAME_SITE`. For `admin.example.com` + `api.example.com`, use `COOKIE_DOMAIN=.example.com`. |
+| Browser says “Method not allowed by Access-Control-Allow-Methods” or CORS status `(null)` | Confirm the backend container is running, then make sure the exact frontend origin (including `127.0.0.1` vs `localhost` and the port) is listed in `CORS_ORIGIN`. Restart the backend after changing it. |
 | Redirect loop to `/login` in production | The frontend middleware looks for the `admin_token` cookie on the frontend host. Use a shared cookie domain or the Vercel rewrite approach in section 9.3. |
 | Images do not load | Check `NEXT_PUBLIC_API_ORIGIN`, the backend `/uploads` static route, and persistent storage for uploads. |
 | `npm run build` fails with “Failed to load SWC binary” on Windows | The native binary is optional. Install it manually: `npm pack @next/swc-win32-x64-msvc@16.4.6`, extract the tarball into `frontend/node_modules/@next/swc-win32-x64-msvc`, then rerun `npm run build`. Alternatively set `$env:NEXT_TEST_WASM_DIR="<project>\frontend\node_modules\@next\swc-wasm-nodejs"` and use the webpack scripts. |

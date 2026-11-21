@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosHeaders } from "axios";
+import axios, { AxiosError } from "axios";
 import type { ApiErrorShape } from "../types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
@@ -42,17 +42,19 @@ async function handleUnauthorized(): Promise<void> {
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  headers: new AxiosHeaders({ "Content-Type": "application/json" }),
 });
 
 api.interceptors.request.use((config) => {
   if (typeof FormData !== "undefined" && config.data instanceof FormData) {
     // Let axios add the multipart boundary itself.
-    if (typeof config.headers?.delete === "function") {
-      config.headers.delete("Content-Type");
-    } else {
-      delete (config.headers as unknown as Record<string, string>)["Content-Type"];
-    }
+    config.headers.delete("Content-Type");
+    return config;
+  }
+
+  // Only requests with a body need JSON. Adding it to GET/DELETE triggers
+  // a CORS preflight for no reason.
+  if (config.data !== undefined && config.data !== null && !config.headers.has("Content-Type")) {
+    config.headers.set("Content-Type", "application/json");
   }
   return config;
 });
