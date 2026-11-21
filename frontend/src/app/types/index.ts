@@ -27,7 +27,9 @@ export interface Member {
   registrationDate: string;
   amount: number;
   currency: Currency;
+  /** First gallery image; kept for the members table thumbnail. */
   imagePath: string;
+  imagePaths: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -66,6 +68,14 @@ export interface MemberListParams {
   order?: "asc" | "desc";
 }
 
+/** One gallery item: either a saved path or a newly selected file with a local preview. */
+export interface UploadImage {
+  id: string;
+  path?: string;
+  file?: File;
+  previewUrl?: string;
+}
+
 export interface MemberFormValues {
   username: string;
   password: string;
@@ -87,7 +97,7 @@ export interface MemberFormValues {
   registrationDate: string;
   amount: string;
   currency: Currency;
-  image?: File | null;
+  images: UploadImage[];
 }
 
 export const EMPTY_MEMBER_FORM: MemberFormValues = {
@@ -111,5 +121,5 @@ export const EMPTY_MEMBER_FORM: MemberFormValues = {
   registrationDate: "",
   amount: "",
   currency: "TL",
-  image: null,
+  images: [],
 };

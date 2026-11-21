@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Pencil, ShieldAlert, Trash2 } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Pencil, ShieldAlert, Trash2, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getMember } from "../../api/services/members";
 import { Button, Card, Loader } from "../../compLibrary";
 import { useRouter } from "../../../i18n/navigation";
@@ -19,11 +19,37 @@ export function MemberDetailsContent({ id }: { id: string }) {
   const locale = useLocale();
   const router = useRouter();
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const { data: member, isPending, isError } = useQuery({
     queryKey: ["member", id],
     queryFn: () => getMember(id),
   });
+
+  const photos = member?.imagePaths?.length
+    ? member.imagePaths
+    : member?.imagePath
+      ? [member.imagePath]
+      : [];
+
+  useEffect(() => {
+    if (activeIndex === null) return;
+
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setActiveIndex(null);
+      if (event.key === "ArrowRight") {
+        setActiveIndex((current) => (current === null ? null : (current + 1) % photos.length));
+      }
+      if (event.key === "ArrowLeft") {
+        setActiveIndex((current) =>
+          current === null ? null : (current - 1 + photos.length) % photos.length,
+        );
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeIndex, photos.length]);
 
   if (isPending) return <Card><Loader label={t("loading")} /></Card>;
   if (isError || !member) return <Card><p className="text-sm text-danger">{errorsT("notFound")}</p></Card>;
@@ -73,14 +99,37 @@ export function MemberDetailsContent({ id }: { id: string }) {
         </div>
       </header>
 
-      <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
-        <Card title={t("photo")}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageSrc(member.imagePath)}
-            alt={member.fullName}
-            className="mx-auto max-h-80 w-full rounded-xl object-contain"
-          />
+      <div className="grid gap-5 lg:grid-cols-[minmax(280px,380px)_1fr]">
+        <Card title={t("photos")} subtitle={t("imageCount", { count: photos.length })}>
+          {photos.length === 0 ? (
+            <p className="text-sm text-muted">{t("noImages")}</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {photos.map((path, index) => (
+                <button
+                  key={`${path}-${index}`}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={t("imageAlt", { name: member.fullName, index: index + 1 })}
+                  className="group relative aspect-square overflow-hidden rounded-xl border border-line bg-surface-2"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imageSrc(path)}
+                    alt={t("imageAlt", { name: member.fullName, index: index + 1 })}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                  <span className="absolute bottom-2 left-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                    {t("viewImage")}
+                  </span>
+                  <span className="absolute right-2 top-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white">
+                    {index + 1}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </Card>
 
         <Card title={t("fieldsTitle")}>
@@ -98,6 +147,65 @@ export function MemberDetailsContent({ id }: { id: string }) {
           </dl>
         </Card>
       </div>
+
+      {activeIndex !== null && photos[activeIndex] && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("photos")}
+          onClick={() => setActiveIndex(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+        >
+          <button
+            type="button"
+            onClick={() => setActiveIndex(null)}
+            aria-label={t("closeImage")}
+            className="absolute right-4 top-4 rounded-lg bg-white/10 p-2 text-white hover:bg-white/20"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+
+          {photos.length > 1 && (
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setActiveIndex((current) => (current === null ? null : (current - 1 + photos.length) % photos.length));
+              }}
+              aria-label={t("previousImage")}
+              className="absolute left-4 rounded-lg bg-white/10 p-2 text-white hover:bg-white/20 sm:left-8"
+            >
+              <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+            </button>
+          )}
+
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageSrc(photos[activeIndex])}
+            alt={t("imageAlt", { name: member.fullName, index: activeIndex + 1 })}
+            onClick={(event) => event.stopPropagation()}
+            className="max-h-[82vh] max-w-full rounded-xl object-contain shadow-2xl"
+          />
+
+          {photos.length > 1 && (
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setActiveIndex((current) => (current === null ? null : (current + 1) % photos.length));
+              }}
+              aria-label={t("nextImage")}
+              className="absolute right-4 rounded-lg bg-white/10 p-2 text-white hover:bg-white/20 sm:right-8"
+            >
+              <ChevronRight className="h-6 w-6" aria-hidden="true" />
+            </button>
+          )}
+
+          <span className="absolute bottom-4 rounded-full bg-black/60 px-3 py-1 text-xs text-white">
+            {t("imageCounter", { current: activeIndex + 1, total: photos.length })}
+          </span>
+        </div>
+      )}
 
       <DeleteMemberModal
         member={deleteOpen ? (member as Member) : null}

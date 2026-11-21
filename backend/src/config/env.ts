@@ -26,6 +26,7 @@ const envSchema = z.object({
   COOKIE_SAME_SITE: z.enum(["lax", "none", "strict"]).default("lax"),
   UPLOAD_DIR: z.string().min(1).default("uploads"),
   MAX_FILE_SIZE_MB: z.coerce.number().int().positive().max(100).default(10),
+  MAX_IMAGES_PER_MEMBER: z.coerce.number().int().min(1).max(100).default(20),
   ADMIN_EMAIL: z.string().email().default("admin@example.com"),
   ADMIN_USERNAME: z.string().min(1).default("admin"),
   ADMIN_PASSWORD: z.string().min(8, "ADMIN_PASSWORD must be at least 8 characters"),
@@ -45,6 +46,7 @@ export const env = {
   corsOrigins: parsed.data.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
   uploadAbsoluteDir: path.resolve(process.cwd(), parsed.data.UPLOAD_DIR),
   maxFileSizeBytes: parsed.data.MAX_FILE_SIZE_MB * 1024 * 1024,
+  maxImagesPerMember: parsed.data.MAX_IMAGES_PER_MEMBER,
 };
 
 export type Env = typeof env;

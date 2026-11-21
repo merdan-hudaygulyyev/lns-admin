@@ -24,6 +24,7 @@ export interface MemberInsert {
   amount: number;
   currency: Currency;
   image_path: string;
+  image_paths: string[];
 }
 
 export type MemberPatch = Partial<MemberInsert>;
@@ -58,6 +59,7 @@ const updateColumns: Record<keyof MemberInsert, string> = {
   amount: "amount",
   currency: "currency",
   image_path: "image_path",
+  image_paths: "image_paths",
 };
 
 function escapeLike(value: string): string {
@@ -150,10 +152,10 @@ export async function create(data: MemberInsert): Promise<MemberRow> {
        passport_number, passport_hash, birth_date, secret_question,
        secret_answer_hash, email, pin_code_hash, phone, inviter, product,
        address, postal_index, official_site, registration_date, amount,
-       currency, image_path, created_at, updated_at
+       currency, image_path, image_paths, created_at, updated_at
      ) VALUES (
        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
-       $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, NOW(), NOW()
+       $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, NOW(), NOW()
      ) RETURNING *`,
     [
       data.username,
@@ -178,6 +180,7 @@ export async function create(data: MemberInsert): Promise<MemberRow> {
       data.amount,
       data.currency,
       data.image_path,
+      data.image_paths,
     ],
   );
   return result.rows[0];

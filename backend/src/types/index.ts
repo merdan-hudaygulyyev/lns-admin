@@ -41,6 +41,7 @@ export interface MemberRow {
   amount: string;
   currency: Currency;
   image_path: string;
+  image_paths: string[];
   created_at: Date;
   updated_at: Date;
 }
@@ -65,7 +66,9 @@ export interface MemberDto {
   registrationDate: string;
   amount: number;
   currency: Currency;
+  /** First gallery image; kept for existing list views. */
   imagePath: string;
+  imagePaths: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -91,6 +94,11 @@ export interface CreateMemberInput {
   registrationDate: string;
   amount: number;
   currency: Currency;
+  /**
+   * Ordered gallery tokens: `existing:<public path>` or `new:<zero-based index>`.
+   * Used on update to keep, remove and reorder images in one request.
+   */
+  imageOrder?: string[];
 }
 
 export type UpdateMemberInput = Partial<CreateMemberInput>;

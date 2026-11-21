@@ -7,7 +7,7 @@ import { sendSuccess } from "../utils/responses";
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const member = await membersService.create(
     req.body as CreateMemberSchema,
-    req.file as Express.Multer.File,
+    req.uploadedImages ?? [],
   );
   sendSuccess(res, member, 201);
 });
@@ -25,7 +25,7 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
   const member = await membersService.update(
     req.params.id,
     req.body as UpdateMemberSchema,
-    req.file,
+    req.uploadedImages ?? [],
   );
   sendSuccess(res, member);
 });

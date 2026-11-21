@@ -5,6 +5,7 @@ declare global {
     interface Request {
       admin?: AdminDto;
       file?: Express.Multer.File;
+      uploadedImages?: Express.Multer.File[];
       validatedQuery?: MemberListFilters;
     }
   }

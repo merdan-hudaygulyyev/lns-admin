@@ -240,7 +240,8 @@ In DBeaver:
     passport_hash,
     amount,
     currency,
-    image_path,
+    image_path,       -- first gallery image (thumbnail)
+    image_paths,      -- all images in display order
     created_at
   FROM members
   ORDER BY created_at DESC;
@@ -355,11 +356,11 @@ Base URL: `/api/v1`
 | `POST` | `/auth/login` | No | Login with `username` or `email` + `password`; sets `admin_token` cookie |
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
 | `GET` | `/auth/me` | Yes | Returns the logged-in admin profile |
-| `POST` | `/members` | Yes | Create member; multipart form with required `image` |
+| `POST` | `/members` | Yes | Create member; multipart form with one or more `images` files |
 | `GET` | `/members` | Yes | List members with search/filter/sort/pagination |
-| `GET` | `/members/:id` | Yes | Get one member with full passport number |
-| `PUT` | `/members/:id` | Yes | Update member; optional new `image` |
-| `DELETE` | `/members/:id` | Yes | Delete member and its image file |
+| `GET` | `/members/:id` | Yes | Get one member with full passport number and all image paths |
+| `PUT` | `/members/:id` | Yes | Update member; optional new `images`, remove/reorder with `imageOrder` |
+| `DELETE` | `/members/:id` | Yes | Delete member and all of its image files |
 
 ### `GET /members` query parameters
 
@@ -387,7 +388,7 @@ All success responses have the shape:
 
 ## 6. Automated API smoke test (PowerShell)
 
-This exercises health → login → me → create with image upload → detail → masked search → update → filters → delete → logout → 401.
+This exercises health → login → me → create with two images → detail → masked search → update → filters → delete → logout → 401.
 
 Run it after `docker compose up -d --build` (or with the local npm stack running).
 
@@ -395,13 +396,16 @@ Run it after `docker compose up -d --build` (or with the local npm stack running
 $ErrorActionPreference='Stop'
 $base='http://localhost:4000/api/v1'
 $jar=Join-Path $env:TEMP 'lns-api-cookies.txt'
-$png=Join-Path $env:TEMP 'lns-test-member.png'
+$png=Join-Path $env:TEMP 'lns-test-member-1.png'
+$png2=Join-Path $env:TEMP 'lns-test-member-2.png'
 $bodyFile=Join-Path $env:TEMP 'lns-api-body.json'
 $outFile=Join-Path $env:TEMP 'lns-api-out.json'
-Remove-Item $jar,$png,$bodyFile,$outFile -ErrorAction SilentlyContinue
+Remove-Item $jar,$png,$png2,$bodyFile,$outFile -ErrorAction SilentlyContinue
 
 # 1x1 PNG with a valid signature for multer
-[IO.File]::WriteAllBytes($png,[Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=='))
+$pngBytes=[Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==')
+[IO.File]::WriteAllBytes($png,$pngBytes)
+[IO.File]::WriteAllBytes($png2,$pngBytes)
 
 function Call([string]$method,[string]$url,[string]$json=$null){
   $args=@('-sS','-X',$method,'-b',$jar,'-c',$jar,'-H','Accept: application/json','-o',$outFile,'-w','%{http_code}')
@@ -433,7 +437,12 @@ $fields=[ordered]@{
 }
 $curlArgs=@('-sS','-X','POST','-b',$jar,'-c',$jar,'-H','Accept: application/json','-o',$outFile,'-w','%{http_code}')
 foreach($k in $fields.Keys){ $curlArgs += @('-F',"$k=$($fields[$k])") }
-$curlArgs += @('-F',"image=@$png;type=image/png","$base/members")
+$curlArgs += @(
+  '-F',"images=@$png;type=image/png",
+  '-F',"images=@$png2;type=image/png",
+  '-F','imageOrder=["new:0","new:1"]',
+  "$base/members"
+)
 $code=(& curl.exe @curlArgs | Select-Object -Last 1).Trim()
 $created=([IO.File]::ReadAllText($outFile)|ConvertFrom-Json)
 Show 'CREATE' ([pscustomobject]@{Code=$code;Body=$created})
@@ -456,8 +465,8 @@ Show 'LIST_AFTER_LOGOUT' (Call 'GET' "$base/members")
 | Health | `200`, `"status":"ok"` |
 | Login | `200`, token and admin returned, cookie saved |
 | `/auth/me` | `200`, admin profile |
-| Create | `201`, new id, passport masked like `A*****67` |
-| Detail | `200`, full passport `A1234567` |
+| Create | `201`, new id, masked passport, two `imagePaths` |
+| Detail | `200`, full passport `A1234567`, two gallery images |
 | Search by passport | `200`, one result, passport masked |
 | Update | `200`, changed fields returned |
 | Filter/sort | `200`, one result |
@@ -492,7 +501,7 @@ Validation messages, toasts, table headers, filters, empty states, and error mes
 4. Log in with `admin` / `Admin@12345`.
 5. Successful login redirects to `/members`.
 6. While logged in, opening `/login` redirects to `/members`.
-7. Open `/profile` and confirm admin id, email, full name, created date.
+7. Open `/profile` and confirm only the profile card is visible (no page title/description) with admin id, email, full name, and created date.
 8. Click **Logout** and confirm protected pages redirect again.
 
 ### 7.3 Members CRUD
@@ -504,16 +513,19 @@ Validation messages, toasts, table headers, filters, empty states, and error mes
 5. **Pagination** — change rows per page and move between pages.
 6. **Create** — open `/members/new`:
    - submit empty form → translated validation errors appear under fields;
-   - fill all required fields and upload a JPG/PNG;
+   - fill all required fields and select several JPG/PNG files at once (or drag them in);
+   - use the arrows to reorder thumbnails and the × button to remove one;
    - submit → success toast and redirect to `/members`;
    - verify the new row appears and its passport is masked.
 7. **Details** — click the eye icon:
    - full passport is shown only here;
-   - all other record fields and the photo are visible.
+   - every uploaded image appears in the gallery;
+   - hovering a thumbnail enlarges it visually; clicking opens the lightbox;
+   - arrow keys or buttons move between images, Escape closes.
 8. **Edit** — open `/members/:id/edit`:
    - leave password, PIN, and secret answer blank to keep them unchanged;
-   - change amount/product and save → success toast;
-   - optionally upload a different image.
+   - add more images, remove existing ones, or reorder the gallery;
+   - change amount/product and save → success toast.
 9. **Delete** — click delete:
    - cancel → nothing happens;
    - confirm → success toast and the row disappears.
@@ -524,15 +536,20 @@ Validation messages, toasts, table headers, filters, empty states, and error mes
 
 ## 8. Push to GitHub
 
-The root folder is not a Git repository yet. Create an empty repository on GitHub first, then run from the project root:
+This project is already a Git repository and `origin` points to `https://github.com/merdan-hudaygulyyev/lns-admin.git`. For any later change, run from the project root:
 
 ```powershell
-git init
-git remote add origin https://github.com/<your-user>/<your-repo>.git
+git status --short
 git add .
-git commit -m "Initial LNS admin full-stack app"
-git branch -M main
-git push -u origin main
+git commit -m "Add multi-image gallery and profile layout"
+git push origin main
+```
+
+If you clone it on another machine for the first time:
+
+```powershell
+git clone https://github.com/merdan-hudaygulyyev/lns-admin.git
+cd lns-admin
 ```
 
 `.gitignore` files already exclude `node_modules`, `.next`, `dist`, `.env`, and uploaded files. Only source, examples, Docker files, SQL, and documentation are committed.
@@ -540,7 +557,7 @@ git push -u origin main
 If you want to verify before committing:
 
 ```powershell
-git status
+git status --short
 git check-ignore backend\.env frontend\.env
 ```
 
@@ -687,7 +704,8 @@ Then repeat the full [manual frontend checklist](#7-manual-frontend-test-checkli
 | `COOKIE_DOMAIN` | no | Empty locally; `.example.com` for sibling subdomains |
 | `COOKIE_SAME_SITE` | no | `lax`, `none`, or `strict` |
 | `UPLOAD_DIR` | no | `uploads`; must be on persistent storage |
-| `MAX_FILE_SIZE_MB` | no | `10` |
+| `MAX_FILE_SIZE_MB` | no | `10` per image |
+| `MAX_IMAGES_PER_MEMBER` | no | `20` images per member (1–100) |
 | `ADMIN_EMAIL` / `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_FULL_NAME` | yes for seed | Change the default password |
 
 ### Frontend

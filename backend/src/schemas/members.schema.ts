@@ -17,6 +17,21 @@ const amount = z.coerce
   .positive("Amount must be greater than 0")
   .max(9_999_999_999.99, "Amount is too large");
 
+/** Multipart sends JSON fields as strings, so parse it before validation. */
+const imageOrder = z.preprocess(
+  (value) => {
+    if (value === undefined || value === null || value === "") return undefined;
+    if (Array.isArray(value)) return value;
+    if (typeof value !== "string") return value;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  },
+  z.array(z.string().min(1).max(400)).max(200).optional(),
+);
+
 const createMemberSchema = z.object({
   username: z.string().trim().min(2).max(100),
   password: z.string().min(8).max(200),
@@ -38,6 +53,7 @@ const createMemberSchema = z.object({
   registrationDate: dateString,
   amount,
   currency: z.enum(["TL", "USD"]),
+  imageOrder,
 });
 
 /** Blank string means "leave unchanged" for secret fields on update. */

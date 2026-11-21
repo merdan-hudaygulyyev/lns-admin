@@ -23,39 +23,32 @@ export function ProfileContent() {
   ];
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold text-ink">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
-      </header>
-
-      <Card title={t("title")} subtitle={t("subtitle")}>
-        <div className="mb-6 flex items-center gap-4">
-          <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/15 text-lg font-semibold text-brand">
-            {admin.fullName.slice(0, 2).toUpperCase()}
-          </span>
-          <div>
-            <p className="text-lg font-semibold text-ink">{admin.fullName}</p>
-            <p className="text-sm text-muted">{admin.email}</p>
-          </div>
+    <Card>
+      <div className="mb-6 flex items-center gap-4">
+        <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/15 text-lg font-semibold text-brand">
+          {admin.fullName.slice(0, 2).toUpperCase()}
+        </span>
+        <div>
+          <p className="text-lg font-semibold text-ink">{admin.fullName}</p>
+          <p className="text-sm text-muted">{admin.email}</p>
         </div>
+      </div>
 
-        <dl className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-line bg-surface-2/50 p-4">
-            <dt className="text-xs text-muted">{t("id")}</dt>
-            <dd className="mt-1 break-all font-mono text-xs text-ink">{admin.id}</dd>
+      <dl className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-line bg-surface-2/50 p-4">
+          <dt className="text-xs text-muted">{t("id")}</dt>
+          <dd className="mt-1 break-all font-mono text-xs text-ink">{admin.id}</dd>
+        </div>
+        {rows.map(({ icon: Icon, label, value }) => (
+          <div key={label} className="rounded-xl border border-line bg-surface-2/50 p-4">
+            <dt className="flex items-center gap-2 text-xs text-muted">
+              <Icon className="h-4 w-4" aria-hidden="true" />
+              {label}
+            </dt>
+            <dd className="mt-1 text-sm text-ink">{value}</dd>
           </div>
-          {rows.map(({ icon: Icon, label, value }) => (
-            <div key={label} className="rounded-xl border border-line bg-surface-2/50 p-4">
-              <dt className="flex items-center gap-2 text-xs text-muted">
-                <Icon className="h-4 w-4" aria-hidden="true" />
-                {label}
-              </dt>
-              <dd className="mt-1 text-sm text-ink">{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </Card>
-    </div>
+        ))}
+      </dl>
+    </Card>
   );
 }

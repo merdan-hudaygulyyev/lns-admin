@@ -134,14 +134,16 @@
     "editTitle": "Agzany üýtgetmek",
     "editSubtitle": "Parol meýdanlaryny boş goýsaňyz, häzirki bahalar saklanar.",
     "image": {
-      "title": "Agzanyň suraty",
-      "hint": "Suraty bu ýere süýrüň ýa-da saýlamak üçin basyň. JPG, PNG, WEBP, SVG we beýleki formatlar, iň ýokary 10 MB.",
-      "dropHere": "Suraty bu ýere goýuň",
+      "title": "Agzanyň suratlary",
+      "hint": "Birnäçe suraty bu ýere süýrüň ýa-da saýlaň. Tertibi üçin oklary, aýyrmak üçin haç düwmelerini ulanyň. Her surat iň köp 10 MB.",
+      "dropHere": "Suratlary bu ýere goýuň",
       "browse": "Faýl saýla",
       "change": "Suraty üýtget",
       "remove": "Aýyr",
       "preview": "Öňünden görüş",
-      "required": "Surat zerur"
+      "required": "Azyndan bir surat zerur",
+      "moveLeft": "Çepe geçir",
+      "moveRight": "Saga geçir"
     },
     "sections": {
       "account": "Hasap",
@@ -171,6 +173,15 @@
     "delete": "Poz",
     "backToList": "Agzalaryň sanawyna",
     "photo": "Surat",
+    "photos": "Suratlar",
+    "imageCount": "{count} surat",
+    "noImages": "Bu agza üçin surat tapylmady.",
+    "viewImage": "Uly görmek üçin basyň",
+    "previousImage": "Öňki surat",
+    "nextImage": "Indiki surat",
+    "closeImage": "Suraty ýap",
+    "imageCounter": "{current} / {total}",
+    "imageAlt": "{name} — surat {index}",
     "fieldsTitle": "Hasaba alyş maglumaty",
     "passportNote": "Pasportyň doly belgisi diňe bu sahypada görkezilýär.",
     "loading": "Agza ýüklenýär..."
@@ -220,9 +231,9 @@
     "positive": "{field} 0-dan uly bolmaly",
     "numeric": "{field} san bolmaly",
     "digits": "{field} 4-12 san bolmaly",
-    "imageRequired": "Surat ýükläň",
+    "imageRequired": "Azyndan bir surat ýükläň",
     "imageType": "Diňe surat faýllary rugsat berilýär",
-    "imageSize": "Suratyň ululygy 10 MB-dan kiçi bolmaly",
+    "imageSize": "Her suratyň ululygy 10 MB-dan kiçi bolmaly",
     "invalid": "Nädogry {field}"
   },
   "errors": {

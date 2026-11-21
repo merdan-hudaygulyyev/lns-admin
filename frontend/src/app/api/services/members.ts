@@ -29,7 +29,24 @@ function toFormData(values: MemberFormValues): FormData {
   for (const [key, value] of entries) {
     if (value !== undefined && value !== null) formData.append(key, String(value));
   }
-  if (values.image) formData.append("image", values.image);
+
+  // New files are appended in gallery order, so `new:N` always points to the right file.
+  let newIndex = 0;
+  const order: string[] = [];
+
+  for (const image of values.images) {
+    if (image.path) {
+      order.push(`existing:${image.path}`);
+      continue;
+    }
+    if (image.file) {
+      order.push(`new:${newIndex}`);
+      formData.append("images", image.file);
+      newIndex += 1;
+    }
+  }
+  formData.append("imageOrder", JSON.stringify(order));
+
   return formData;
 }
 

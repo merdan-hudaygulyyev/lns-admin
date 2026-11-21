@@ -13,49 +13,73 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: env.maxFileSizeBytes,
-    files: 1,
-    fields: 30,
+    files: env.maxImagesPerMember,
+    fields: 31,
   },
   fileFilter: (_req, file, callback) => {
     if (!ALLOWED_IMAGE_MIME_TYPES.has(file.mimetype)) {
-      callback(AppError.unprocessable("Unsupported image type", { image: "Unsupported image type" }));
+      callback(AppError.unprocessable("Unsupported image type", { images: "Unsupported image type" }));
       return;
     }
     callback(null, true);
   },
 });
 
+/** Accepts the new `images` field and the legacy single `image` field. */
+const parse = upload.fields([
+  { name: "images", maxCount: env.maxImagesPerMember },
+  { name: "image", maxCount: 1 },
+]);
+
+function collectImages(req: Request): Express.Multer.File[] {
+  const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+  return [...(files?.images ?? []), ...(files?.image ?? [])];
+}
+
 /**
- * Parses the optional `image` part, then verifies MIME type AND magic bytes.
+ * Parses image parts, then verifies MIME type AND magic bytes for every file.
  * Set `required` for create, leave it false for updates.
  */
 export function imageUploadMiddleware(required: boolean): RequestHandler[] {
-  const parse = upload.single("image");
-
   const inspect = (req: Request, _res: Response, next: NextFunction): void => {
     try {
-      if (!req.file) {
+      const images = collectImages(req);
+
+      if (images.length === 0) {
         if (required) {
-          throw AppError.unprocessable("Image is required", { image: "Image is required" });
+          throw AppError.unprocessable("At least one image is required", {
+            images: "At least one image is required",
+          });
         }
+        req.uploadedImages = [];
         next();
         return;
       }
 
-      const format = detectImageFormat(req.file.buffer);
-      if (!format) {
-        throw AppError.unprocessable("File is not a recognised image", {
-          image: "File signature does not match a supported image format",
+      if (images.length > env.maxImagesPerMember) {
+        throw AppError.unprocessable(`Maximum ${env.maxImagesPerMember} images are allowed`, {
+          images: `Maximum ${env.maxImagesPerMember} images are allowed`,
         });
       }
-      if (!mimeMatchesFormat(req.file.mimetype, format)) {
-        throw AppError.unprocessable("Image MIME type does not match its contents", {
-          image: "Declared content type does not match the file signature",
-        });
+
+      for (const image of images) {
+        const format = detectImageFormat(image.buffer);
+        if (!format) {
+          throw AppError.unprocessable("File is not a recognised image", {
+            images: "File signature does not match a supported image format",
+          });
+        }
+        if (!mimeMatchesFormat(image.mimetype, format)) {
+          throw AppError.unprocessable("Image MIME type does not match its contents", {
+            images: "Declared content type does not match the file signature",
+          });
+        }
+        if (format.ext === "svg") {
+          image.buffer = sanitizeSvg(image.buffer);
+        }
       }
-      if (format.ext === "svg") {
-        req.file.buffer = sanitizeSvg(req.file.buffer);
-      }
+
+      req.uploadedImages = images;
       next();
     } catch (error) {
       next(error);

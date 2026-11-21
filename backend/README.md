@@ -52,11 +52,11 @@ Base URL: `/api/v1`
 | `POST` | `/auth/login` | No | Login, sets `admin_token` httpOnly cookie |
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
 | `GET` | `/auth/me` | Yes | Logged-in admin profile |
-| `POST` | `/members` | Yes | Create member (multipart, required `image`) |
+| `POST` | `/members` | Yes | Create member (multipart, one or more `images`) |
 | `GET` | `/members` | Yes | List/search/filter/sort/paginate members |
-| `GET` | `/members/:id` | Yes | Get member with full passport |
-| `PUT` | `/members/:id` | Yes | Update member (optional new `image`) |
-| `DELETE` | `/members/:id` | Yes | Delete member and uploaded image |
+| `GET` | `/members/:id` | Yes | Get member with full passport and all image paths |
+| `PUT` | `/members/:id` | Yes | Update member; optional new `images`, optional `imageOrder` |
+| `DELETE` | `/members/:id` | Yes | Delete member and all uploaded images |
 
 List query parameters:
 
@@ -67,6 +67,15 @@ birthFrom, birthTo, sortBy, order
 ```
 
 `sortBy` accepts `created_at | full_name | amount | registration_date`; `order` accepts `asc | desc`.
+
+### Image upload contract
+
+- Send one or more `images` file parts (the old single `image` part is still accepted).
+- `imageOrder` is a JSON string array describing the final gallery order:
+  - `existing:/uploads/uuid.png` keeps a saved image;
+  - `new:0`, `new:1`, … refer to uploaded files in the order they were sent.
+- Omitted existing paths are removed; every new file must appear exactly once.
+- `image_path` stores the first image for list thumbnails; `image_paths` stores the ordered gallery.
 
 ## Project structure
 

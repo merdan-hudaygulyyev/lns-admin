@@ -38,10 +38,14 @@ export function errorHandler(
   } else if (error instanceof multer.MulterError) {
     statusCode = error.code === "LIMIT_FILE_SIZE" ? 413 : 400;
     message = error.code === "LIMIT_FILE_SIZE" ? "Image exceeds the maximum allowed size" : error.message;
-    errors = { image: message };
+    errors = { images: message };
   } else if (error instanceof SyntaxError && "body" in error) {
     statusCode = 400;
     message = "Malformed JSON body";
+  } else if ((error as { status?: number }).status === 404) {
+    // express.static with fallthrough:false reports missing files this way.
+    statusCode = 404;
+    message = "File not found";
   } else if ((error as { code?: string }).code === "23505") {
     statusCode = 409;
     message = "A unique value is already in use";

@@ -3,15 +3,22 @@
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import toast from "react-hot-toast";
 import * as yup from "yup";
 import { getErrorMessage, getFieldErrors } from "../../api/axiosInstance";
 import { createMember, updateMember } from "../../api/services/members";
 import { Button, Card, Input, Select } from "../../compLibrary";
 import { useRouter } from "../../../i18n/navigation";
-import { EMPTY_MEMBER_FORM, type Currency, type Member, type MemberFormValues } from "../../types";
+import {
+  EMPTY_MEMBER_FORM,
+  type Currency,
+  type Member,
+  type MemberFormValues,
+  type UploadImage,
+} from "../../types";
 import { ROUTES } from "../../utils/routes";
+import { createUploadImages, revokePreview, revokePreviews, savedImages } from "../../utils/uploadImages";
 import { ImageDropzone } from "../ImageDropzone/ImageDropzone";
 
 interface MemberFormProps {
@@ -52,7 +59,7 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
             registrationDate: member.registrationDate,
             amount: String(member.amount),
             currency: member.currency,
-            image: null,
+            images: savedImages(member),
           }
         : { ...EMPTY_MEMBER_FORM },
     [member],
@@ -63,11 +70,15 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
     const min = (field: string, size: number) => validation("min", { field, min: size });
     const max = (field: string, size: number) => validation("max", { field, max: size });
 
-    const imageSchema = yup
-      .mixed<File>()
-      .nullable()
-      .test("type", validation("imageType"), (value) => !value || value.type.startsWith("image/"))
-      .test("size", validation("imageSize"), (value) => !value || value.size <= 10 * 1024 * 1024);
+    const imagesSchema = yup
+      .array<UploadImage>()
+      .test("required", validation("imageRequired"), (value) => isEdit || (value?.length ?? 0) > 0)
+      .test("type", validation("imageType"), (value) =>
+        !value?.some((image) => image.file && !image.file.type.startsWith("image/")),
+      )
+      .test("size", validation("imageSize"), (value) =>
+        !value?.some((image) => image.file && image.file.size > 10 * 1024 * 1024),
+      );
 
     return yup.object({
       username: yup.string().required(required(fields("username"))).min(2, min(fields("username"), 2)).max(100, max(fields("username"), 100)),
@@ -100,7 +111,7 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
         .test("numeric", validation("numeric", { field: fields("amount") }), (value) => value !== undefined && value !== "" && !Number.isNaN(Number(value)))
         .test("positive", validation("positive", { field: fields("amount") }), (value) => Number(value) > 0),
       currency: yup.mixed<Currency>().oneOf(["TL", "USD"]).required(required(fields("currency"))),
-      image: isEdit ? imageSchema.notRequired() : imageSchema.required(validation("imageRequired")),
+      images: imagesSchema,
     });
   }, [fields, validation, isEdit]);
 
@@ -128,10 +139,36 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
     onSubmit: (values) => mutation.mutate(values),
   });
 
+  const imagesRef = useRef(formik.values.images);
+  useEffect(() => {
+    imagesRef.current = formik.values.images;
+  }, [formik.values.images]);
+  useEffect(() => () => revokePreviews(imagesRef.current), []);
+
   const errorFor = (name: keyof MemberFormValues): string | undefined => {
     const touched = formik.touched[name];
     const error = formik.errors[name];
-    return touched && error ? String(error) : undefined;
+    return touched && typeof error === "string" ? error : undefined;
+  };
+
+  const addImages = (files: File[]): void => {
+    formik.setFieldValue("images", [...formik.values.images, ...createUploadImages(files)]);
+    formik.setFieldTouched("images", true, false);
+  };
+
+  const removeImage = (id: string): void => {
+    const image = formik.values.images.find((item) => item.id === id);
+    if (image) revokePreview(image);
+    formik.setFieldValue("images", formik.values.images.filter((item) => item.id !== id));
+  };
+
+  const moveImage = (id: string, direction: -1 | 1): void => {
+    const images = [...formik.values.images];
+    const index = images.findIndex((image) => image.id === id);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= images.length) return;
+    [images[index], images[target]] = [images[target], images[index]];
+    formik.setFieldValue("images", images);
   };
 
   const textField = (
@@ -167,10 +204,11 @@ export function MemberForm({ mode, member, memberId }: MemberFormProps) {
       <form onSubmit={formik.handleSubmit} noValidate className="space-y-5">
         <Card title={t("image.title")}>
           <ImageDropzone
-            file={formik.values.image}
-            currentPath={isEdit ? member?.imagePath : undefined}
-            error={errorFor("image")}
-            onFile={(file) => formik.setFieldValue("image", file)}
+            images={formik.values.images}
+            error={errorFor("images")}
+            onAdd={addImages}
+            onRemove={removeImage}
+            onMove={moveImage}
           />
         </Card>
 

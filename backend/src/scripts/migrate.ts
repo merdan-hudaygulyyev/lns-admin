@@ -3,11 +3,19 @@ import path from "path";
 import { pool } from "../config/database";
 import { logger } from "../config/logger";
 
-/** Executes the idempotent schema script. Create the database first (see sql/00_create_database.sql). */
+/** Runs every numbered schema file in order. `00_create_database.sql` is setup only. */
 async function main(): Promise<void> {
-  const schemaPath = path.resolve(process.cwd(), "sql", "01_schema.sql");
-  const sql = await fs.readFile(schemaPath, "utf8");
-  await pool.query(sql);
+  const sqlDir = path.resolve(process.cwd(), "sql");
+  const files = (await fs.readdir(sqlDir))
+    .filter((file) => /^\d{2}_.*\.sql$/.test(file) && !file.startsWith("00_"))
+    .sort();
+
+  for (const file of files) {
+    const sql = await fs.readFile(path.join(sqlDir, file), "utf8");
+    await pool.query(sql);
+    logger.info("Applied schema file", { file });
+  }
+
   logger.info("Database schema is up to date");
 }
 

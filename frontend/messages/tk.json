@@ -134,14 +134,16 @@
     "editTitle": "Üyeyi düzenle",
     "editSubtitle": "Mevcut değeri korumak için şifre alanlarını boş bırakın.",
     "image": {
-      "title": "Üye fotoğrafı",
-      "hint": "Bir görsel sürükleyip bırakın veya seçmek için tıklayın. JPG, PNG, WEBP, SVG ve diğer formatlar, en fazla 10 MB.",
-      "dropHere": "Görseli buraya bırakın",
+      "title": "Üye fotoğrafları",
+      "hint": "Birden fazla görsel sürükleyip bırakın veya seçin. Sıralamak için okları, kaldırmak için çarpıyı kullanın. Her görsel en fazla 10 MB.",
+      "dropHere": "Görselleri buraya bırakın",
       "browse": "Dosya seç",
       "change": "Fotoğrafı değiştir",
       "remove": "Kaldır",
       "preview": "Önizleme",
-      "required": "Fotoğraf zorunludur"
+      "required": "En az bir fotoğraf zorunludur",
+      "moveLeft": "Sola taşı",
+      "moveRight": "Sağa taşı"
     },
     "sections": {
       "account": "Hesap",
@@ -171,6 +173,15 @@
     "delete": "Sil",
     "backToList": "Üye listesine dön",
     "photo": "Fotoğraf",
+    "photos": "Fotoğraflar",
+    "imageCount": "{count} görsel",
+    "noImages": "Bu üye için görsel bulunamadı.",
+    "viewImage": "Büyütmek için tıklayın",
+    "previousImage": "Önceki görsel",
+    "nextImage": "Sonraki görsel",
+    "closeImage": "Görseli kapat",
+    "imageCounter": "{current} / {total}",
+    "imageAlt": "{name} - görsel {index}",
     "fieldsTitle": "Kayıt bilgileri",
     "passportNote": "Pasaport numarasının tamamı yalnızca bu sayfada gösterilir.",
     "loading": "Üye yükleniyor..."
@@ -220,9 +231,9 @@
     "positive": "{field} 0'dan büyük olmalıdır",
     "numeric": "{field} bir sayı olmalıdır",
     "digits": "{field} 4-12 rakam içermelidir",
-    "imageRequired": "Lütfen bir fotoğraf yükleyin",
+    "imageRequired": "Lütfen en az bir fotoğraf yükleyin",
     "imageType": "Yalnızca görsel dosyalarına izin verilir",
-    "imageSize": "Görsel 10 MB'dan küçük olmalıdır",
+    "imageSize": "Her görsel 10 MB'dan küçük olmalıdır",
     "invalid": "Geçersiz {field}"
   },
   "errors": {
