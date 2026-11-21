@@ -1,8 +1,19 @@
 import { toIntlLocale } from "../../i18n/routing";
 import type { Currency } from "../types";
 
+const turkmenMonths = ["Ýan", "Few", "Mar", "Apr", "Maý", "Iýn", "Iýl", "Awg", "Sen", "Okt", "Noý", "Dek"];
+
 export function formatDate(value: string | undefined, locale: string): string {
   if (!value) return "—";
+
+  // Chromium has no Turkmen ICU data and falls back to Russian for "tk".
+  // Use fixed Turkmen month names so server and client always render the same text.
+  if (locale === "tm") {
+    const [year, month, day] = value.slice(0, 10).split("-");
+    const monthName = turkmenMonths[Number(month) - 1];
+    return monthName ? `${day} ${monthName} ${year}` : value;
+  }
+
   const date = new Date(`${value}T00:00:00Z`);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat(toIntlLocale(locale), {
@@ -14,9 +25,10 @@ export function formatDate(value: string | undefined, locale: string): string {
 }
 
 export function formatAmount(amount: number, currency: Currency, locale: string): string {
+  // "TL" is the project label for Turkish lira; Intl expects the ISO code "TRY".
   return new Intl.NumberFormat(toIntlLocale(locale), {
     style: "currency",
-    currency,
+    currency: currency === "TL" ? "TRY" : currency,
     minimumFractionDigits: 2,
   }).format(amount);
 }

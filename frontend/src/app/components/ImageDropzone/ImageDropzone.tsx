@@ -17,16 +17,20 @@ export function ImageDropzone({ file, currentPath, error, onFile }: ImageDropzon
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [previewFile, setPreviewFile] = useState<File | null>(null);
 
-  useEffect(() => {
-    if (!file) {
-      setPreview(null);
-      return;
-    }
-    const url = URL.createObjectURL(file);
-    setPreview(url);
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
+  const selectedFile = file ?? null;
+  if (selectedFile !== previewFile) {
+    setPreviewFile(selectedFile);
+    setPreview(selectedFile ? URL.createObjectURL(selectedFile) : null);
+  }
+
+  useEffect(
+    () => () => {
+      if (preview) URL.revokeObjectURL(preview);
+    },
+    [preview],
+  );
 
   const src = preview ?? (currentPath ? imageSrc(currentPath) : null);
 

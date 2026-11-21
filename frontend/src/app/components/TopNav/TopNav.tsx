@@ -12,7 +12,7 @@ interface TopNavProps {
   onOpenMobile: () => void;
 }
 
-export function TopNav({ collapsed, onOpenMobile }: TopNavProps) {
+export function TopNav({ onOpenMobile }: TopNavProps) {
   const common = useTranslations("common");
   const t = useTranslations("nav");
 

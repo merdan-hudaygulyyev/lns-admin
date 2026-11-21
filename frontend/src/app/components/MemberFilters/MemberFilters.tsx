@@ -27,7 +27,6 @@ export function MemberFilters({ value, onChange, onReset }: MemberFiltersProps) 
   const t = useTranslations("members.filters");
   const membersT = useTranslations("members");
   const fields = useTranslations("fields");
-  const common = useTranslations("common");
 
   const set = (key: keyof FilterValues, fieldValue: string) => {
     onChange({ ...value, [key]: fieldValue });
@@ -115,7 +114,7 @@ export function MemberFilters({ value, onChange, onReset }: MemberFiltersProps) 
           onChange={(event) => set("birthTo", event.target.value)}
         />
         <p className="self-end text-xs text-muted sm:col-span-2 lg:col-span-3 xl:col-span-4">
-          {fields("amount")} · {common("currency")}
+          {fields("amount")} · {fields("currency")}
         </p>
       </div>
     </div>

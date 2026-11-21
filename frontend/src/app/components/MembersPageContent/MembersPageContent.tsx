@@ -2,14 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, ChevronLeft, ChevronRight, Plus, Search, SearchX, SlidersHorizontal } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
 import { getMembers } from "../../api/services/members";
 import { Button, Select } from "../../compLibrary";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Link } from "../../../i18n/navigation";
 import type { Member, MemberListParams } from "../../types";
-import { formatDate } from "../../utils/format";
 import { ROUTES } from "../../utils/routes";
 import { DeleteMemberModal } from "../DeleteMemberModal/DeleteMemberModal";
 import { EMPTY_FILTERS, MemberFilters, type FilterValues } from "../MemberFilters/MemberFilters";
@@ -20,7 +19,6 @@ const PAGE_SIZES = [10, 20, 50];
 export function MembersPageContent() {
   const t = useTranslations("members");
   const common = useTranslations("common");
-  const locale = useLocale();
 
   const [searchInput, setSearchInput] = useState("");
   const search = useDebounce(searchInput, 400);
@@ -31,10 +29,6 @@ export function MembersPageContent() {
   const [order, setOrder] = useState<"asc" | "desc">("desc");
   const [showFilters, setShowFilters] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
-
-  useEffect(() => {
-    setPage(1);
-  }, [search, filters, limit, sortBy, order]);
 
   const params = useMemo<MemberListParams>(
     () => ({ page, limit, search: search || undefined, sortBy, order, ...filters }),
@@ -49,9 +43,15 @@ export function MembersPageContent() {
   const members = membersQuery.data?.data ?? [];
   const meta = membersQuery.data?.meta;
 
+  const applyFilters = (next: FilterValues) => {
+    setFilters(next);
+    setPage(1);
+  };
+
   const resetFilters = () => {
     setFilters(EMPTY_FILTERS);
     setSearchInput("");
+    setPage(1);
   };
 
   const showingFrom = meta && meta.total > 0 ? (meta.page - 1) * meta.limit + 1 : 0;
@@ -77,7 +77,10 @@ export function MembersPageContent() {
             <input
               type="search"
               value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
+              onChange={(event) => {
+                setSearchInput(event.target.value);
+                setPage(1);
+              }}
               placeholder={t("searchPlaceholder")}
               aria-label={common("search")}
               className="input pl-10"
@@ -99,7 +102,10 @@ export function MembersPageContent() {
               name="sortBy"
               aria-label={t("sortBy")}
               value={sortBy}
-              onChange={(event) => setSortBy(event.target.value as typeof sortBy)}
+              onChange={(event) => {
+                setSortBy(event.target.value as typeof sortBy);
+                setPage(1);
+              }}
               options={[
                 { value: "created_at", label: t("sort.created_at") },
                 { value: "full_name", label: t("sort.full_name") },
@@ -113,7 +119,10 @@ export function MembersPageContent() {
               name="order"
               aria-label={t("sortBy")}
               value={order}
-              onChange={(event) => setOrder(event.target.value as "asc" | "desc")}
+              onChange={(event) => {
+                setOrder(event.target.value as "asc" | "desc");
+                setPage(1);
+              }}
               options={[
                 { value: "desc", label: t("sort.desc") },
                 { value: "asc", label: t("sort.asc") },
@@ -123,7 +132,7 @@ export function MembersPageContent() {
         </div>
 
         {showFilters && (
-          <MemberFilters value={filters} onChange={setFilters} onReset={resetFilters} />
+          <MemberFilters value={filters} onChange={applyFilters} onReset={resetFilters} />
         )}
       </div>
 
@@ -173,7 +182,10 @@ export function MembersPageContent() {
                   {t("pagination.rowsPerPage")}
                   <select
                     value={limit}
-                    onChange={(event) => setLimit(Number(event.target.value))}
+                    onChange={(event) => {
+                      setLimit(Number(event.target.value));
+                      setPage(1);
+                    }}
                     className="input w-16 !py-1.5"
                     aria-label={t("pagination.rowsPerPage")}
                   >
@@ -215,8 +227,6 @@ export function MembersPageContent() {
           </>
         )}
       </div>
-
-      <p className="sr-only">{formatDate(new Date().toISOString().slice(0, 10), locale)}</p>
 
       <DeleteMemberModal
         member={memberToDelete}
