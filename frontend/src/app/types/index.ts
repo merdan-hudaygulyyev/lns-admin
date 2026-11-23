@@ -1,10 +1,13 @@
 export type Currency = "TL" | "USD";
 export type Locale = "tk" | "ru" | "tm";
+export type AdminRole = "super_admin" | "admin";
 
 export interface Admin {
   id: string;
+  username: string;
   email: string;
   fullName: string;
+  role: AdminRole;
   createdAt: string;
 }
 

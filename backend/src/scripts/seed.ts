@@ -12,6 +12,7 @@ async function main(): Promise<void> {
     username: env.ADMIN_USERNAME,
     passwordHash,
     fullName: env.ADMIN_FULL_NAME,
+    role: "super_admin",
   });
   logger.info("Default admin seeded", { id: admin.id, email: admin.email, username: admin.username });
 }

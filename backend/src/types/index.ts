@@ -1,4 +1,5 @@
 export type Currency = "TL" | "USD";
+export type AdminRole = "super_admin" | "admin";
 
 export interface AdminRow {
   id: string;
@@ -6,14 +7,17 @@ export interface AdminRow {
   username: string;
   password_hash: string;
   full_name: string;
+  role: AdminRole;
   created_at: Date;
   updated_at: Date;
 }
 
 export interface AdminDto {
   id: string;
+  username: string;
   email: string;
   fullName: string;
+  role: AdminRole;
   createdAt: string;
 }
 

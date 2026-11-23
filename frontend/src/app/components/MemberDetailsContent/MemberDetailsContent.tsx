@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, ChevronLeft, ChevronRight, Pencil, ShieldAlert, Trash2, X } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Download, Pencil, ShieldAlert, Trash2, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { getMember } from "../../api/services/members";
 import { Button, Card, Loader } from "../../compLibrary";
 import { useRouter } from "../../../i18n/navigation";
 import type { Member } from "../../types";
-import { formatAmount, formatDate, imageSrc } from "../../utils/format";
+import { formatAmount, formatDate, imageDownloadSrc, imageSrc } from "../../utils/format";
 import { memberEdit, ROUTES } from "../../utils/routes";
 import { DeleteMemberModal } from "../DeleteMemberModal/DeleteMemberModal";
 
@@ -106,27 +106,40 @@ export function MemberDetailsContent({ id }: { id: string }) {
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {photos.map((path, index) => (
-                <button
+                <div
                   key={`${path}-${index}`}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={t("imageAlt", { name: member.fullName, index: index + 1 })}
                   className="group relative aspect-square overflow-hidden rounded-xl border border-line bg-surface-2"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={imageSrc(path)}
-                    alt={t("imageAlt", { name: member.fullName, index: index + 1 })}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                  <span className="absolute bottom-2 left-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-                    {t("viewImage")}
-                  </span>
-                  <span className="absolute right-2 top-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white">
+                  <button
+                    type="button"
+                    onClick={() => setActiveIndex(index)}
+                    aria-label={t("imageAlt", { name: member.fullName, index: index + 1 })}
+                    className="absolute inset-0 h-full w-full"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imageSrc(path)}
+                      alt={t("imageAlt", { name: member.fullName, index: index + 1 })}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="absolute bottom-2 left-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                      {t("viewImage")}
+                    </span>
+                  </button>
+                  <a
+                    href={imageDownloadSrc(path)}
+                    download
+                    aria-label={t("downloadImage", { index: index + 1 })}
+                    title={t("downloadImage", { index: index + 1 })}
+                    className="absolute right-2 top-2 z-10 rounded-md bg-black/60 p-1.5 text-white transition hover:bg-black/80"
+                  >
+                    <Download className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                  <span className="pointer-events-none absolute bottom-2 right-2 rounded-md bg-black/60 px-2 py-0.5 text-xs text-white">
                     {index + 1}
                   </span>
-                </button>
+                </div>
               ))}
             </div>
           )}
@@ -164,6 +177,16 @@ export function MemberDetailsContent({ id }: { id: string }) {
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
+
+          <a
+            href={imageDownloadSrc(photos[activeIndex])}
+            download
+            aria-label={t("downloadImage", { index: activeIndex + 1 })}
+            title={t("downloadImage", { index: activeIndex + 1 })}
+            className="absolute right-16 top-4 rounded-lg bg-white/10 p-2 text-white hover:bg-white/20"
+          >
+            <Download className="h-5 w-5" aria-hidden="true" />
+          </a>
 
           {photos.length > 1 && (
             <button

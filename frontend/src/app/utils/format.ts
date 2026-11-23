@@ -38,3 +38,11 @@ export function imageSrc(path: string): string {
   const origin = process.env.NEXT_PUBLIC_API_ORIGIN || "http://localhost:4000";
   return `${origin.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
 }
+
+/** Forces a browser download through the authenticated API endpoint. */
+export function imageDownloadSrc(path: string): string {
+  const filename = path.split("/").pop();
+  if (!filename) return "#";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+  return `${apiUrl.replace(/\/$/, "")}/uploads/download/${encodeURIComponent(filename)}`;
+}

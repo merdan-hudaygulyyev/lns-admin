@@ -39,6 +39,15 @@ export const authenticate: RequestHandler = async (
   }
 };
 
+/** Admin creation is restricted to the bootstrap super administrator. */
+export const requireSuperAdmin: RequestHandler = (req, _res, next) => {
+  if (req.admin?.role !== "super_admin") {
+    next(AppError.forbidden("Super administrator access required"));
+    return;
+  }
+  next();
+};
+
 export const authCookieOptions = {
   httpOnly: true,
   sameSite: env.COOKIE_SAME_SITE,

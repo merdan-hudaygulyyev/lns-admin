@@ -1,8 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, LayoutGrid, UserRound, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutGrid, ShieldCheck, UserRound, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../../../i18n/navigation";
+import { useCurrentAdmin } from "../../hooks/useCurrentAdmin";
 import { ROUTES } from "../../utils/routes";
 import { LogoutButton } from "../LogoutButton/LogoutButton";
 
@@ -22,9 +23,13 @@ export function Sidebar({
   const t = useTranslations("nav");
   const common = useTranslations("common");
   const pathname = usePathname();
+  const { data: currentAdmin } = useCurrentAdmin();
 
   const items = [
     { href: ROUTES.members, label: t("members"), icon: LayoutGrid },
+    ...(currentAdmin?.role === "super_admin"
+      ? [{ href: ROUTES.admins, label: t("admins"), icon: ShieldCheck }]
+      : []),
     { href: ROUTES.profile, label: t("profile"), icon: UserRound },
   ];
 

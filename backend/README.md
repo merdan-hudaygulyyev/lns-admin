@@ -51,12 +51,15 @@ Base URL: `/api/v1`
 | `GET` | `/health` | No | Health check |
 | `POST` | `/auth/login` | No | Login, sets `admin_token` httpOnly cookie |
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
-| `GET` | `/auth/me` | Yes | Logged-in admin profile |
+| `GET` | `/auth/me` | Yes | Logged-in admin profile with `username` and `role` |
+| `GET` | `/admins` | Super admin | List admin accounts |
+| `POST` | `/admins` | Super admin | Create `super_admin` or `admin` account |
 | `POST` | `/members` | Yes | Create member (multipart, one or more `images`) |
 | `GET` | `/members` | Yes | List/search/filter/sort/paginate members |
 | `GET` | `/members/:id` | Yes | Get member with full passport and all image paths |
 | `PUT` | `/members/:id` | Yes | Update member; optional new `images`, optional `imageOrder` |
 | `DELETE` | `/members/:id` | Yes | Delete member and all uploaded images |
+| `GET` | `/uploads/download/:filename` | Yes | Download a stored upload as an attachment |
 
 List query parameters:
 

@@ -21,6 +21,7 @@
   },
   "nav": {
     "members": "Agzalar",
+    "admins": "Dolandyryjylar",
     "profile": "Profil",
     "logout": "Çykmak",
     "collapse": "Menýuny ýap",
@@ -177,6 +178,7 @@
     "imageCount": "{count} surat",
     "noImages": "Bu agza üçin surat tapylmady.",
     "viewImage": "Uly görmek üçin basyň",
+    "downloadImage": "{index}-njy suraty ýükle",
     "previousImage": "Öňki surat",
     "nextImage": "Indiki surat",
     "closeImage": "Suraty ýap",
@@ -185,6 +187,42 @@
     "fieldsTitle": "Hasaba alyş maglumaty",
     "passportNote": "Pasportyň doly belgisi diňe bu sahypada görkezilýär.",
     "loading": "Agza ýüklenýär..."
+  },
+  "admins": {
+    "title": "Dolandyryjylar",
+    "subtitle": "Panele girip bilýän dolandyryjy hasaplaryny dolandyryň.",
+    "add": "Dolandyryjy goş",
+    "forbiddenTitle": "Bu sahypa giriş ygtyýaryňyz ýok",
+    "forbiddenDescription": "Diňe baş dolandyryjy täze dolandyryjy döredip biler.",
+    "formTitle": "Täze dolandyryjy",
+    "formSubtitle": "Ulanyjy ady we paroly bilen derrew giriş edip biler.",
+    "passwordHint": "Azyndan 8 harp.",
+    "listTitle": "Dolandyryjylaryň sanawy",
+    "fields": {
+      "username": "Ulanyjy ady",
+      "email": "E-poçta",
+      "password": "Parol",
+      "role": "Orny",
+      "fullName": "Ady we familiýasy (islege görä)"
+    },
+    "roles": {
+      "super_admin": "Baş dolandyryjy",
+      "admin": "Dolandyryjy"
+    },
+    "table": {
+      "username": "Ulanyjy ady",
+      "email": "E-poçta",
+      "fullName": "Ady we familiýasy",
+      "role": "Orny",
+      "createdAt": "Döredilen senesi"
+    },
+    "empty": "Häzirçe dolandyryjy ýok.",
+    "loading": "Dolandyryjylar ýüklenýär...",
+    "error": "Dolandyryjylar ýüklenip bilinmedi.",
+    "toasts": {
+      "created": "Dolandyryjy döredildi",
+      "createFailed": "Dolandyryjy döredilmedi"
+    }
   },
   "profile": {
     "title": "Profil",

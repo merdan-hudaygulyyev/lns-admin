@@ -344,6 +344,21 @@ Generate real 64-hex keys with:
 
 > The keys in `.env.example`/Compose are development defaults. Change them before any real deployment.
 
+### 4.4 Admin accounts and roles
+
+Log in with the bootstrap admin (`admin` / `Admin@12345` by default). Its role is `super_admin`, so the **Yöneticiler / Администраторы / Dolandyryjylar** page appears in the sidebar.
+
+Only a `super_admin` can create another admin:
+
+1. Open the **Admins** page.
+2. Enter `username`, `email`, `password`, and `role`.
+3. Choose `admin` for a normal admin or `super_admin` for another full administrator.
+4. Click **Create**.
+
+The account is inserted into the PostgreSQL `admins` table immediately, so it is visible in DBeaver. The password is stored only as bcrypt hash. It can log in with the chosen username/email + password right away.
+
+Existing installations are migrated so the oldest admin becomes `super_admin`. The seed script always keeps the configured `ADMIN_*` account as `super_admin`.
+
 ---
 
 ## 5. API endpoints
@@ -355,12 +370,15 @@ Base URL: `/api/v1`
 | `GET` | `/health` | No | Health check |
 | `POST` | `/auth/login` | No | Login with `username` or `email` + `password`; sets `admin_token` cookie |
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
-| `GET` | `/auth/me` | Yes | Returns the logged-in admin profile |
+| `GET` | `/auth/me` | Yes | Returns the logged-in admin profile, including `username` and `role` |
+| `GET` | `/admins` | Super admin | List admin accounts |
+| `POST` | `/admins` | Super admin | Create an admin with `username`, `email`, `password`, `role`, optional `fullName` |
 | `POST` | `/members` | Yes | Create member; multipart form with one or more `images` files |
 | `GET` | `/members` | Yes | List members with search/filter/sort/pagination |
 | `GET` | `/members/:id` | Yes | Get one member with full passport number and all image paths |
 | `PUT` | `/members/:id` | Yes | Update member; optional new `images`, remove/reorder with `imageOrder` |
 | `DELETE` | `/members/:id` | Yes | Delete member and all of its image files |
+| `GET` | `/uploads/download/:filename` | Yes | Force-download a stored upload with `Content-Disposition: attachment` |
 
 ### `GET /members` query parameters
 

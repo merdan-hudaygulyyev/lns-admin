@@ -21,6 +21,7 @@
   },
   "nav": {
     "members": "Üyeler",
+    "admins": "Yöneticiler",
     "profile": "Profil",
     "logout": "Çıkış",
     "collapse": "Kenar çubuğunu daralt",
@@ -177,6 +178,7 @@
     "imageCount": "{count} görsel",
     "noImages": "Bu üye için görsel bulunamadı.",
     "viewImage": "Büyütmek için tıklayın",
+    "downloadImage": "Görsel {index} indir",
     "previousImage": "Önceki görsel",
     "nextImage": "Sonraki görsel",
     "closeImage": "Görseli kapat",
@@ -185,6 +187,42 @@
     "fieldsTitle": "Kayıt bilgileri",
     "passportNote": "Pasaport numarasının tamamı yalnızca bu sayfada gösterilir.",
     "loading": "Üye yükleniyor..."
+  },
+  "admins": {
+    "title": "Yöneticiler",
+    "subtitle": "Panele erişebilen yönetici hesaplarını yönetin.",
+    "add": "Yönetici ekle",
+    "forbiddenTitle": "Bu sayfaya erişim izniniz yok",
+    "forbiddenDescription": "Yalnızca süper yöneticiler yeni yönetici oluşturabilir.",
+    "formTitle": "Yeni yönetici",
+    "formSubtitle": "Kullanıcı adı ve şifresiyle hemen giriş yapabilir.",
+    "passwordHint": "En az 8 karakter.",
+    "listTitle": "Yönetici listesi",
+    "fields": {
+      "username": "Kullanıcı adı",
+      "email": "E-posta",
+      "password": "Şifre",
+      "role": "Rol",
+      "fullName": "Ad soyad (isteğe bağlı)"
+    },
+    "roles": {
+      "super_admin": "Süper yönetici",
+      "admin": "Yönetici"
+    },
+    "table": {
+      "username": "Kullanıcı adı",
+      "email": "E-posta",
+      "fullName": "Ad soyad",
+      "role": "Rol",
+      "createdAt": "Oluşturulma tarihi"
+    },
+    "empty": "Henüz yönetici yok.",
+    "loading": "Yöneticiler yükleniyor...",
+    "error": "Yöneticiler yüklenemedi.",
+    "toasts": {
+      "created": "Yönetici oluşturuldu",
+      "createFailed": "Yönetici oluşturulamadı"
+    }
   },
   "profile": {
     "title": "Profil",

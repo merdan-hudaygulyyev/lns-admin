@@ -24,10 +24,11 @@ export function DeleteMemberModal({ member, onClose, onDeleted }: DeleteMemberMo
     mutationFn: (id: string) => deleteMember(id),
     onSuccess: async (_data, id) => {
       toast.success(toasts("deleted"));
-      await queryClient.invalidateQueries({ queryKey: ["members"] });
-      queryClient.removeQueries({ queryKey: ["member", id] });
       onClose();
       onDeleted?.(id);
+      // Only refresh the list. Removing the detail query while its page is
+      // still mounted makes React Query refetch the now-deleted member (404).
+      await queryClient.invalidateQueries({ queryKey: ["members"] });
     },
     onError: (error: unknown) => {
       toast.error(getErrorMessage(error, toasts("deleteFailed")));
