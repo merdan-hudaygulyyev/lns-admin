@@ -6,7 +6,6 @@ export function toAdminDto(row: AdminRow): AdminDto {
     id: row.id,
     username: row.username,
     email: row.email,
-    fullName: row.full_name,
     role: row.role,
     createdAt: row.created_at.toISOString(),
   };
@@ -32,36 +31,44 @@ export async function listAdmins(): Promise<AdminRow[]> {
   return result.rows;
 }
 
+/** Keeps the bootstrap account as the only super administrator. */
+export async function demoteOtherSuperAdmins(email: string): Promise<void> {
+  await query(
+    `UPDATE admins
+     SET role = 'admin', updated_at = NOW()
+     WHERE role = 'super_admin' AND LOWER(email) <> LOWER($1)`,
+    [email],
+  );
+}
+
 interface AdminInput {
   email: string;
   username: string;
   passwordHash: string;
-  fullName: string;
   role: AdminRole;
 }
 
 export async function createAdmin(input: AdminInput): Promise<AdminRow> {
   const result = await query<AdminRow>(
-    `INSERT INTO admins (email, username, password_hash, full_name, role, created_at, updated_at)
-     VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+    `INSERT INTO admins (email, username, password_hash, role, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, NOW(), NOW())
      RETURNING *`,
-    [input.email, input.username, input.passwordHash, input.fullName, input.role],
+    [input.email, input.username, input.passwordHash, input.role],
   );
   return result.rows[0];
 }
 
 export async function upsertAdmin(input: AdminInput): Promise<AdminRow> {
   const result = await query<AdminRow>(
-    `INSERT INTO admins (email, username, password_hash, full_name, role, created_at, updated_at)
-     VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+    `INSERT INTO admins (email, username, password_hash, role, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, NOW(), NOW())
      ON CONFLICT (email) DO UPDATE
        SET username = EXCLUDED.username,
            password_hash = EXCLUDED.password_hash,
-           full_name = EXCLUDED.full_name,
            role = EXCLUDED.role,
            updated_at = NOW()
      RETURNING *`,
-    [input.email, input.username, input.passwordHash, input.fullName, input.role],
+    [input.email, input.username, input.passwordHash, input.role],
   );
   return result.rows[0];
 }

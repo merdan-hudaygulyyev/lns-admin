@@ -10,7 +10,7 @@ A complete admin panel for managing `members`, with a separate Node/Express/Type
 | Frontend | Next.js 16, TypeScript, Tailwind 3, TanStack Query, Formik + yup, axios, next-themes, next-intl, react-hot-toast |
 | Database | PostgreSQL database `admin`, tables `admins` and `members` |
 | Security | JWT access token in an httpOnly `admin_token` cookie; all API routes protected except login; bcrypt hashes; AES-256-GCM encrypted passports; HMAC blind index for passport search |
-| Languages | `tk` = Turkish, `ru` = Russian, `tm` = Turkmenistan/Turkmen |
+| Languages | `tk` = Turkish, `ru` = Russian, `tm` = Turkmenistan/Turkmen, `uz` = Uzbekistan/Uzbek |
 | Delivery | Local npm scripts, Docker Compose, GitHub, Vercel frontend, external backend host, custom domain |
 
 Default local login:
@@ -46,7 +46,9 @@ LNS project/
 │  ├─ .env.example
 │  ├─ sql/
 │  │  ├─ 00_create_database.sql
-│  │  └─ 01_schema.sql
+│  │  ├─ 01_schema.sql
+│  │  ├─ 03_admin_roles.sql
+│  │  └─ 04_admin_cleanup.sql
 │  ├─ src/
 │  │  ├─ config/               # env validation
 │  │  ├─ controllers/          # HTTP layer
@@ -69,7 +71,8 @@ LNS project/
    ├─ messages/
    │  ├─ tk.json               # Turkish
    │  ├─ ru.json               # Russian
-   │  └─ tm.json               # Turkmen
+   │  ├─ tm.json               # Turkmen
+   │  └─ uz.json               # Uzbek
    ├─ src/
    │  ├─ app/
    │  │  ├─ [locale]/          # login, members, new, details, edit, profile
@@ -226,7 +229,7 @@ In DBeaver:
 - Right-click `admins` → **View Data**, or run:
 
   ```sql
-  SELECT id, email, username, full_name, created_at FROM admins;
+  SELECT id, email, username, role, created_at FROM admins;
   ```
 
 - Right-click `members` → **View Data**, or run:
@@ -328,7 +331,6 @@ PASSPORT_HASH_KEY=fedcba9876543210fedcba9876543210fedcba9876543210fedcba98765432
 ADMIN_EMAIL=admin@example.com
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=Admin@12345
-ADMIN_FULL_NAME=Default Administrator
 CORS_ORIGIN=http://localhost:3000,http://127.0.0.1:3000
 COOKIE_DOMAIN=
 COOKIE_SAME_SITE=lax
@@ -346,18 +348,19 @@ Generate real 64-hex keys with:
 
 ### 4.4 Admin accounts and roles
 
-Log in with the bootstrap admin (`admin` / `Admin@12345` by default). Its role is `super_admin`, so the **Yöneticiler / Администраторы / Dolandyryjylar** page appears in the sidebar.
+Log in with the bootstrap admin (`admin` / `Admin@12345` by default). Its role is `super_admin`, so the **Yöneticiler / Администраторы / Dolandyryjylar / Administratorlar** page appears in the sidebar. There is exactly one super admin: a partial unique index on `admins.role` prevents a second one.
 
-Only a `super_admin` can create another admin:
+Only the `super_admin` can create admins:
 
-1. Open the **Admins** page.
-2. Enter `username`, `email`, `password`, and `role`.
-3. Choose `admin` for a normal admin or `super_admin` for another full administrator.
-4. Click **Create**.
+1. Open the **Admins** page and click **Add admin** at the top right.
+2. In the modal, enter `username`, `email`, and `password`. The role selector is fixed to `admin`.
+3. Click **Create**. The modal closes and the new row appears in the table.
 
 The account is inserted into the PostgreSQL `admins` table immediately, so it is visible in DBeaver. The password is stored only as bcrypt hash. It can log in with the chosen username/email + password right away.
 
-Existing installations are migrated so the oldest admin becomes `super_admin`. The seed script always keeps the configured `ADMIN_*` account as `super_admin`.
+Admin accounts store only `username`, `email`, `password_hash`, and `role`; there is no full-name field. The login response and the JWT both include the current role, and `/auth/me` plus the profile page/dropdown display it. Authorization still checks the role in the database on every request.
+
+Existing installations are migrated so the oldest admin becomes `super_admin`; `04_admin_cleanup.sql` demotes any extra super admins. The seed script always keeps the configured `ADMIN_*` account as the single `super_admin`.
 
 ---
 
@@ -372,7 +375,7 @@ Base URL: `/api/v1`
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
 | `GET` | `/auth/me` | Yes | Returns the logged-in admin profile, including `username` and `role` |
 | `GET` | `/admins` | Super admin | List admin accounts |
-| `POST` | `/admins` | Super admin | Create an admin with `username`, `email`, `password`, `role`, optional `fullName` |
+| `POST` | `/admins` | Super admin | Create an admin with `username`, `email`, `password`, and `role: "admin"` |
 | `POST` | `/members` | Yes | Create member; multipart form with one or more `images` files |
 | `GET` | `/members` | Yes | List members with search/filter/sort/pagination |
 | `GET` | `/members/:id` | Yes | Get one member with full passport number and all image paths |
@@ -506,20 +509,21 @@ Open these URLs and confirm the UI language:
 | <http://localhost:3000/login> | Turkish (`tk`) | `Giriş yap` |
 | <http://localhost:3000/ru/login> | Russian (`ru`) | `Войти` |
 | <http://localhost:3000/tm/login> | Turkmen (`tm`) | `Girmek` |
+| <http://localhost:3000/uz/login> | Uzbek (`uz`) | `Kirish` |
 
-The language switcher in the header must offer **Türkçe**, **Русский**, and **Türkmençe**. Switching language should keep you on the same page (for example `/members` → `/tm/members`).
+The language switcher in the header must offer **Türkçe**, **Русский**, **Türkmençe**, and **O'zbekcha**. Switching language should keep you on the same page (for example `/members` → `/uz/members`).
 
-Validation messages, toasts, table headers, filters, empty states, and error messages are translated in all three files.
+Validation messages, toasts, table headers, filters, empty states, and error messages are translated in all four files.
 
 ### 7.2 Auth and protection
 
 1. While logged out, open `/members` → redirects to `/login`.
 2. Open `/ru/members` → redirects to `/ru/login`.
-3. Open `/tm/profile` → redirects to `/tm/login`.
+3. Open `/tm/profile` and `/uz/profile` → each redirects to its own `/login`.
 4. Log in with `admin` / `Admin@12345`.
 5. Successful login redirects to `/members`.
 6. While logged in, opening `/login` redirects to `/members`.
-7. Open `/profile` and confirm only the profile card is visible (no page title/description) with admin id, email, full name, and created date.
+7. Open `/profile` and confirm only the profile card is visible (no page title/description) with admin id, username, email, role, and created date. The dropdown next to the theme menu shows the same username and role.
 8. Click **Logout** and confirm protected pages redirect again.
 
 ### 7.3 Members CRUD
@@ -549,6 +553,16 @@ Validation messages, toasts, table headers, filters, empty states, and error mes
    - confirm → success toast and the row disappears.
 10. **Theme** — switch between light, dark, and system; check sidebar, cards, table, and modal colors.
 11. **DBeaver check** — refresh the `members` table and confirm the new/updated/deleted row and that hashes remain hashes.
+
+### 7.4 Admin accounts
+
+1. Log in as `admin` / `Admin@12345` and open `/admins`.
+2. Click **Add admin** at the top right: the create modal opens with username, email, password, and a fixed `admin` role.
+3. Submit an empty form → translated validation errors appear. Try `role: super_admin` directly against `POST /admins` → `422` (only `admin` is accepted).
+4. Create a test admin → success toast, modal closes, and the new row appears in the table with the `admin` role badge.
+5. Log out and log in with the new admin's username + password → success. The `/auth/login` response, the JWT payload, `/auth/me`, the profile page, and the profile dropdown all show `role: "admin"`.
+6. As the new admin, `/admins` is not accessible and `POST /admins` returns `403`.
+7. In DBeaver, confirm `SELECT username, email, role FROM admins;` shows one `super_admin` plus the new `admin`, with no full-name column.
 
 ---
 
@@ -618,7 +632,6 @@ MAX_FILE_SIZE_MB=10
 ADMIN_EMAIL=admin@example.com
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=<change-me>
-ADMIN_FULL_NAME=Default Administrator
 ```
 
 > `COOKIE_DOMAIN=.example.com` is needed when the frontend is `admin.example.com` and the API is `api.example.com`: it makes the httpOnly cookie visible to both subdomains. Keep `COOKIE_SAME_SITE=lax` for sibling subdomains. Use `none` only for genuinely cross-site setups (and only over HTTPS).
@@ -696,6 +709,7 @@ and leave backend `COOKIE_DOMAIN` empty so the cookie is set on the frontend hos
 https://admin.example.com/login        → Turkish login page
 https://admin.example.com/ru/login     → Russian login page
 https://admin.example.com/tm/login     → Turkmen login page
+https://admin.example.com/uz/login     → Uzbek login page
 https://api.example.com/api/v1/health  → {"success":true,...}
 ```
 
@@ -724,7 +738,7 @@ Then repeat the full [manual frontend checklist](#7-manual-frontend-test-checkli
 | `UPLOAD_DIR` | no | `uploads`; must be on persistent storage |
 | `MAX_FILE_SIZE_MB` | no | `10` per image |
 | `MAX_IMAGES_PER_MEMBER` | no | `20` images per member (1–100) |
-| `ADMIN_EMAIL` / `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_FULL_NAME` | yes for seed | Change the default password |
+| `ADMIN_EMAIL` / `ADMIN_USERNAME` / `ADMIN_PASSWORD` | yes for seed | Change the default password |
 
 ### Frontend
 

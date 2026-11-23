@@ -10,9 +10,9 @@ export interface LoginResult {
   admin: AdminDto;
 }
 
-/** JWT payload intentionally contains only the admin id. */
-export function signAccessToken(adminId: string): string {
-  return jwt.sign({ sub: adminId }, env.JWT_SECRET, {
+/** JWT carries id and role; the database still decides the role on every request. */
+export function signAccessToken(admin: Pick<AdminDto, "id" | "role">): string {
+  return jwt.sign({ sub: admin.id, role: admin.role }, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions["expiresIn"],
   });
 }
@@ -24,7 +24,7 @@ export async function login(username: string, password: string): Promise<LoginRe
     throw AppError.unauthorized("Invalid username or password");
   }
   return {
-    token: signAccessToken(admin.id),
+    token: signAccessToken(admin),
     admin: adminsRepository.toAdminDto(admin),
   };
 }

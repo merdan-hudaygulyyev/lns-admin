@@ -14,6 +14,8 @@ BEGIN
 END
 $$;
 
+-- Only needed when the column was just added: promote the oldest admin once.
 UPDATE admins
 SET role = 'super_admin'
-WHERE id = (SELECT id FROM admins ORDER BY created_at ASC LIMIT 1);
+WHERE id = (SELECT id FROM admins ORDER BY created_at ASC, username ASC LIMIT 1)
+  AND NOT EXISTS (SELECT 1 FROM admins WHERE role = 'super_admin');

@@ -18,7 +18,7 @@ let handlingUnauthorized = false;
 function currentLocale(): string {
   if (typeof window === "undefined") return "tk";
   const first = window.location.pathname.split("/").filter(Boolean)[0];
-  return ["tk", "ru", "tm"].includes(first ?? "") ? first! : "tk";
+  return ["tk", "ru", "tm", "uz"].includes(first ?? "") ? first! : "tk";
 }
 
 /** httpOnly cookies can only be cleared by the backend logout endpoint. */

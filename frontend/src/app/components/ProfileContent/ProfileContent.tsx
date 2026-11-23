@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { CalendarDays, Mail, UserRound } from "lucide-react";
+import { CalendarDays, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { getMe } from "../../api/services/auth";
 import { Card, Loader } from "../../compLibrary";
@@ -9,6 +9,7 @@ import { formatDate } from "../../utils/format";
 
 export function ProfileContent() {
   const t = useTranslations("profile");
+  const admins = useTranslations("admins");
   const errors = useTranslations("errors");
   const locale = useLocale();
   const { data: admin, isPending, isError } = useQuery({ queryKey: ["me"], queryFn: getMe });
@@ -17,8 +18,9 @@ export function ProfileContent() {
   if (isError || !admin) return <Card><p className="text-sm text-danger">{errors("generic")}</p></Card>;
 
   const rows = [
-    { icon: UserRound, label: t("fullName"), value: admin.fullName },
+    { icon: UserRound, label: t("username"), value: admin.username },
     { icon: Mail, label: t("email"), value: admin.email },
+    { icon: ShieldCheck, label: t("role"), value: admins(`roles.${admin.role}`) },
     { icon: CalendarDays, label: t("createdAt"), value: formatDate(admin.createdAt.slice(0, 10), locale) },
   ];
 
@@ -26,10 +28,10 @@ export function ProfileContent() {
     <Card>
       <div className="mb-6 flex items-center gap-4">
         <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/15 text-lg font-semibold text-brand">
-          {admin.fullName.slice(0, 2).toUpperCase()}
+          {admin.username.slice(0, 2).toUpperCase()}
         </span>
         <div>
-          <p className="text-lg font-semibold text-ink">{admin.fullName}</p>
+          <p className="text-lg font-semibold text-ink">{admin.username}</p>
           <p className="text-sm text-muted">{admin.email}</p>
         </div>
       </div>

@@ -6,12 +6,14 @@ import { hashPassword } from "../services/auth.service";
 
 /** Creates or updates the bootstrap admin using values from .env. */
 async function main(): Promise<void> {
+  const email = env.ADMIN_EMAIL.toLowerCase();
   const passwordHash = await hashPassword(env.ADMIN_PASSWORD);
+  await adminsRepository.demoteOtherSuperAdmins(email);
+
   const admin = await adminsRepository.upsertAdmin({
-    email: env.ADMIN_EMAIL.toLowerCase(),
+    email,
     username: env.ADMIN_USERNAME,
     passwordHash,
-    fullName: env.ADMIN_FULL_NAME,
     role: "super_admin",
   });
   logger.info("Default admin seeded", { id: admin.id, email: admin.email, username: admin.username });

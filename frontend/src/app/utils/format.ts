@@ -2,15 +2,16 @@ import { toIntlLocale } from "../../i18n/routing";
 import type { Currency } from "../types";
 
 const turkmenMonths = ["Ýan", "Few", "Mar", "Apr", "Maý", "Iýn", "Iýl", "Awg", "Sen", "Okt", "Noý", "Dek"];
+const uzbekMonths = ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"];
 
 export function formatDate(value: string | undefined, locale: string): string {
   if (!value) return "—";
 
   // Chromium has no Turkmen ICU data and falls back to Russian for "tk".
   // Use fixed Turkmen month names so server and client always render the same text.
-  if (locale === "tm") {
+  if (locale === "tm" || locale === "uz") {
     const [year, month, day] = value.slice(0, 10).split("-");
-    const monthName = turkmenMonths[Number(month) - 1];
+    const monthName = (locale === "tm" ? turkmenMonths : uzbekMonths)[Number(month) - 1];
     return monthName ? `${day} ${monthName} ${year}` : value;
   }
 

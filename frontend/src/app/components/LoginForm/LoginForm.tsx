@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, EyeOff, LockKeyhole, UserRound } from "lucide-react";
 import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
@@ -17,6 +17,7 @@ export function LoginForm() {
   const validation = useTranslations("validation");
   const common = useTranslations("common");
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -27,7 +28,8 @@ export function LoginForm() {
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (admin) => {
+      queryClient.setQueryData(["me"], admin);
       router.replace(ROUTES.members);
       router.refresh();
     },

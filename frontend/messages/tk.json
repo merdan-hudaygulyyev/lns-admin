@@ -54,7 +54,8 @@
     "title": "Dil",
     "tk": "Türkçe",
     "ru": "Русский",
-    "tm": "Türkmençe"
+    "tm": "Türkmençe",
+    "uz": "Özbekçe"
   },
   "members": {
     "title": "Üyeler",
@@ -203,7 +204,7 @@
       "email": "E-posta",
       "password": "Şifre",
       "role": "Rol",
-      "fullName": "Ad soyad (isteğe bağlı)"
+      "roleHint": "Yalnızca standart yönetici oluşturulabilir. Süper yönetici benzersizdir."
     },
     "roles": {
       "super_admin": "Süper yönetici",
@@ -212,7 +213,6 @@
     "table": {
       "username": "Kullanıcı adı",
       "email": "E-posta",
-      "fullName": "Ad soyad",
       "role": "Rol",
       "createdAt": "Oluşturulma tarihi"
     },
@@ -228,8 +228,9 @@
     "title": "Profil",
     "subtitle": "Oturum açmış yönetici hakkında bilgi.",
     "id": "Yönetici kimliği",
+    "username": "Kullanıcı adı",
     "email": "E-posta",
-    "fullName": "Ad soyad",
+    "role": "Rol",
     "createdAt": "Kayıt tarihi",
     "loading": "Profil yükleniyor..."
   },

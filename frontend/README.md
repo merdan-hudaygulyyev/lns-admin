@@ -33,7 +33,8 @@ NEXT_PUBLIC_API_ORIGIN=http://localhost:4000
 | `/members/new` | Create member with image upload |
 | `/members/[id]` | Member details; the only page that reveals the full passport |
 | `/members/[id]/edit` | Edit member |
-| `/profile` | Logged-in admin profile |
+| `/admins` | Admin list with an add modal and table (super admin only) |
+| `/profile` | Logged-in admin profile with username and role |
 
 All pages except login are protected by `src/middleware.ts`, which checks the `admin_token` cookie and then delegates to `next-intl`.
 
@@ -44,16 +45,17 @@ All pages except login are protected by `src/middleware.ts`, which checks the `a
 | `tk` | Turkish | `messages/tk.json` | none (default) |
 | `ru` | Russian | `messages/ru.json` | `/ru` |
 | `tm` | Turkmenistan / Turkmen | `messages/tm.json` | `/tm` |
+| `uz` | Uzbekistan / Uzbek | `messages/uz.json` | `/uz` |
 
-`localePrefix: "as-needed"` means Turkish uses clean URLs (`/login`, `/members`), while Russian and Turkmen use prefixes (`/ru/login`, `/tm/login`).
+`localePrefix: "as-needed"` means Turkish uses clean URLs (`/login`, `/members`), while Russian, Turkmen, and Uzbek use prefixes (`/ru/login`, `/tm/login`, `/uz/login`).
 
 Date and number formatting uses a small mapping in `src/i18n/routing.ts`:
 
-- project `tk` (Turkish) → Intl `tr`
-- project `tm` (Turkmen) → Intl `tk`
+- project `tk` (Turkish) and `tm` (Turkmen) → Intl `tr`
+- project `uz` (Uzbek) → Intl `uz-UZ`, with fixed Uzbek month names
 - `ru` stays `ru`
 
-All three message files have identical key sets, including translated validation messages, toasts, table headers, filters, empty/error states, and form hints.
+All four message files have identical key sets, including translated validation messages, toasts, table headers, filters, empty/error states, and form hints.
 
 ## Key components
 
@@ -65,6 +67,8 @@ src/
 ├─ app/components/
 │  ├─ AppShell/              # sidebar + header + theme/language/profile menus
 │  ├─ MembersPageContent/    # list, filters, pagination, delete modal
+│  ├─ AdminsContent/         # admin table + top-right add button
+│  ├─ AddAdminModal/         # Formik + yup create dialog (admin role only)
 │  ├─ MemberForm/            # Formik + yup create/edit form
 │  ├─ MemberDetailsContent/
 │  ├─ MembersTable/

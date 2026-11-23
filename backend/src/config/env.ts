@@ -30,7 +30,6 @@ const envSchema = z.object({
   ADMIN_EMAIL: z.string().email().default("admin@example.com"),
   ADMIN_USERNAME: z.string().min(1).default("admin"),
   ADMIN_PASSWORD: z.string().min(8, "ADMIN_PASSWORD must be at least 8 characters"),
-  ADMIN_FULL_NAME: z.string().min(1).default("Default Administrator"),
 });
 
 const parsed = envSchema.safeParse(process.env);

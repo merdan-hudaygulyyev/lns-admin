@@ -54,7 +54,8 @@
     "title": "Dil",
     "tk": "Türkçe",
     "ru": "Русский",
-    "tm": "Türkmençe"
+    "tm": "Türkmençe",
+    "uz": "Özbekçe"
   },
   "members": {
     "title": "Agzalar",
@@ -203,7 +204,7 @@
       "email": "E-poçta",
       "password": "Parol",
       "role": "Orny",
-      "fullName": "Ady we familiýasy (islege görä)"
+      "roleHint": "Diňe adaty dolandyryjy döredilip bilner. Baş dolandyryjy ýeke-täk."
     },
     "roles": {
       "super_admin": "Baş dolandyryjy",
@@ -212,7 +213,6 @@
     "table": {
       "username": "Ulanyjy ady",
       "email": "E-poçta",
-      "fullName": "Ady we familiýasy",
       "role": "Orny",
       "createdAt": "Döredilen senesi"
     },
@@ -228,8 +228,9 @@
     "title": "Profil",
     "subtitle": "Giren administratör barada maglumat.",
     "id": "Administratör ID",
+    "username": "Ulanyjy ady",
     "email": "Email",
-    "fullName": "Doly ady",
+    "role": "Orny",
     "createdAt": "Agza bolan wagty",
     "loading": "Profil ýüklenýär..."
   },

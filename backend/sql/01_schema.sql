@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS admins (
     email         VARCHAR(255) NOT NULL UNIQUE,
     username      VARCHAR(100) NOT NULL UNIQUE,
     password_hash TEXT        NOT NULL,
-    full_name     VARCHAR(255) NOT NULL,
     created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
     updated_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );

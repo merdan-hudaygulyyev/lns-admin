@@ -53,7 +53,7 @@ Base URL: `/api/v1`
 | `POST` | `/auth/logout` | Yes | Clears the cookie |
 | `GET` | `/auth/me` | Yes | Logged-in admin profile with `username` and `role` |
 | `GET` | `/admins` | Super admin | List admin accounts |
-| `POST` | `/admins` | Super admin | Create `super_admin` or `admin` account |
+| `POST` | `/admins` | Super admin | Create an `admin` account (`username`, `email`, `password`, `role: "admin"`) |
 | `POST` | `/members` | Yes | Create member (multipart, one or more `images`) |
 | `GET` | `/members` | Yes | List/search/filter/sort/paginate members |
 | `GET` | `/members/:id` | Yes | Get member with full passport and all image paths |

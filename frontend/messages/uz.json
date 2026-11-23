@@ -1,0 +1,285 @@
+{
+  "common": {
+    "appName": "LNS Admin",
+    "adminPanel": "Boshqaruv paneli",
+    "back": "Orqaga",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "save": "O'zgarishlarni saqlash",
+    "saving": "Saqlanmoqda...",
+    "create": "Yaratish",
+    "creating": "Yaratilmoqda...",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "reset": "Tiklash",
+    "loading": "Yuklanmoqda...",
+    "actions": "Harakatlar",
+    "all": "Barchasi",
+    "unknown": "Noma'lum",
+    "retry": "Qaytadan urinish"
+  },
+  "nav": {
+    "members": "A'zolar",
+    "admins": "Administratorlar",
+    "profile": "Profil",
+    "logout": "Chiqish",
+    "collapse": "Yon panelni yig'ish",
+    "expand": "Yon panelni ochish",
+    "openMenu": "Menyu ochish",
+    "closeMenu": "Menyu yopish",
+    "section": "Ish maydoni"
+  },
+  "login": {
+    "title": "Xush kelibsiz",
+    "subtitle": "LNS a'zolarini boshqarish uchun kiring.",
+    "username": "Foydalanuvchi nomi yoki email",
+    "password": "Parol",
+    "usernamePlaceholder": "admin",
+    "passwordPlaceholder": "Parolingizni kiriting",
+    "showPassword": "Parolni ko'rsatish",
+    "hidePassword": "Parolni yashirish",
+    "submit": "Kirish",
+    "submitting": "Kirilmoqda...",
+    "errorTitle": "Kirib bo'lmadi",
+    "footer": "Kirish cheklangan. Faqat vakolatli administratorlar."
+  },
+  "theme": {
+    "title": "Mavzu",
+    "light": "Yorug'",
+    "dark": "Qorong'",
+    "system": "Tizim"
+  },
+  "language": {
+    "title": "Til",
+    "tk": "Türkçe",
+    "ru": "Русский",
+    "tm": "Türkmençe",
+    "uz": "O'zbekcha"
+  },
+  "members": {
+    "title": "A'zolar",
+    "subtitle": "Yozuvlar, hujjatlar va to'lovlarni boshqaring.",
+    "add": "A'zo qo'shish",
+    "searchPlaceholder": "Ism, foydalanuvchi nomi, email, telefon, pasport bo'yicha qidirish...",
+    "filtersTitle": "Filtrlar",
+    "showFilters": "Filtrlarni ko'rsatish",
+    "hideFilters": "Filtrlarni yashirish",
+    "resetFilters": "Filtrlarni tiklash",
+    "sortBy": "Tartib",
+    "sort": {
+      "created_at": "Yaratilgan sana",
+      "full_name": "Ism va familiya",
+      "amount": "Summa",
+      "registration_date": "Ro'yxatga olingan sana",
+      "asc": "O'sish",
+      "desc": "Kamayish"
+    },
+    "table": {
+      "image": "Rasm",
+      "username": "Foydalanuvchi nomi",
+      "fullName": "Ism va familiya",
+      "email": "Email",
+      "phone": "Telefon",
+      "product": "Mahsulot",
+      "amount": "Summa",
+      "registrationDate": "Ro'yxatga olingan",
+      "actions": "Harakatlar",
+      "view": "Tafsilotlarni ko'rish",
+      "edit": "A'zoni tahrirlash",
+      "delete": "A'zoni o'chirish"
+    },
+    "filters": {
+      "currency": "Valyuta",
+      "product": "Mahsulot",
+      "inviter": "Taklif qilgan",
+      "amountMin": "Minimal summa",
+      "amountMax": "Maksimal summa",
+      "registrationFrom": "Ro'yxatga olingan (boshidan)",
+      "registrationTo": "Ro'yxatga olingan (gacha)",
+      "birthFrom": "Tug'ilgan sana (boshidan)",
+      "birthTo": "Tug'ilgan sana (gacha)",
+      "allCurrencies": "Barcha valyutalar"
+    },
+    "pagination": {
+      "rowsPerPage": "Sahifadagi qatorlar",
+      "showing": "{total} ta yozuvdan {from}-{to} ko'rsatilmoqda",
+      "pageOf": "Sahifa {page} / {total}"
+    },
+    "empty": {
+      "title": "A'zo topilmadi",
+      "description": "Qidiruv yoki filtrlarni o'zgartiring yoki yangi a'zo qo'shing."
+    },
+    "error": {
+      "title": "A'zolar yuklanmadi",
+      "description": "Ro'yxat olinayotganda xatolik yuz berdi."
+    },
+    "delete": {
+      "title": "A'zoni o'chirish",
+      "message": "{name} a'zosini o'chirishni xohlaysizmi? Bu harakatni qaytarib bo'lmaydi.",
+      "cancel": "Bekor qilish",
+      "confirm": "A'zoni o'chirish",
+      "deleting": "O'chirilmoqda..."
+    },
+    "toasts": {
+      "created": "A'zo muvaffaqiyatli yaratildi",
+      "updated": "A'zo muvaffaqiyatli yangilandi",
+      "deleted": "A'zo muvaffaqiyatli o'chirildi",
+      "createFailed": "A'zo yaratilmadi",
+      "updateFailed": "A'zo yangilanmadi",
+      "deleteFailed": "A'zo o'chirilmadi"
+    }
+  },
+  "memberForm": {
+    "createTitle": "Yangi a'zo",
+    "createSubtitle": "A'zoni saqlash uchun barcha majburiy maydonlarni to'ldiring.",
+    "editTitle": "A'zoni tahrirlash",
+    "editSubtitle": "Joriy qiymatni saqlash uchun parol maydonlarini bo'sh qoldiring.",
+    "image": {
+      "title": "A'zo rasmlari",
+      "hint": "Bir nechta rasmni sudrab olib keling yoki tanlang. Tartib uchun o'qlar, o'chirish uchun x belgisidan foydalaning. Har bir rasm 10 MB dan oshmasligi kerak.",
+      "dropHere": "Raslarni bu yerga qo'ying",
+      "browse": "Fayl tanlash",
+      "change": "Rasmni almashtirish",
+      "remove": "O'chirish",
+      "preview": "Oldindan ko'rish",
+      "required": "Kamida bitta rasm talab qilinadi",
+      "moveLeft": "Chapga siljitish",
+      "moveRight": "O'ngga siljitish"
+    },
+    "sections": {
+      "account": "Hisob",
+      "personal": "Shaxsiy ma'lumotlar",
+      "security": "Xavfsizlik",
+      "contact": "Aloqa",
+      "registration": "Ro'yxatga olish"
+    },
+    "passwordHint": "Kamida 8 belgi. Parolni o'zgartirmaslik uchun bo'sh qoldiring.",
+    "pinHint": "4-12 raqam. PINni o'zgartirmaslik uchun bo'sh qoldiring.",
+    "secretHint": "Joriy javobni saqlash uchun bo'sh qoldiring.",
+    "submitCreate": "A'zo yaratish",
+    "submitSave": "O'zgarishlarni saqlash",
+    "submitting": "Yuborilmoqda...",
+    "cancel": "Bekor qilish",
+    "errorTitle": "Belgilangan maydonlarni tuzating",
+    "toasts": {
+      "created": "A'zo muvaffaqiyatli yaratildi",
+      "updated": "A'zo muvaffaqiyatli yangilandi",
+      "error": "A'zo saqlanmadi"
+    }
+  },
+  "memberDetails": {
+    "title": "A'zo tafsilotlari",
+    "subtitle": "{name} uchun to'liq yozuv",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "backToList": "A'zolar ro'yxatiga qaytish",
+    "photo": "Rasm",
+    "photos": "Rasmlar",
+    "imageCount": "{count} rasm",
+    "noImages": "Bu a'zo uchun rasm topilmadi.",
+    "viewImage": "Kattalashtirish uchun bosing",
+    "downloadImage": "{index}-rasmni yuklab olish",
+    "previousImage": "Oldingi rasm",
+    "nextImage": "Keyingi rasm",
+    "closeImage": "Rasmni yopish",
+    "imageCounter": "{current} / {total}",
+    "imageAlt": "{name} — rasm {index}",
+    "fieldsTitle": "Ro'yxatga olish ma'lumotlari",
+    "passportNote": "Pasport raqamining to'liqi faqat shu sahifada ko'rsatiladi.",
+    "loading": "A'zo yuklanmoqda..."
+  },
+  "admins": {
+    "title": "Administratorlar",
+    "subtitle": "Paneldan foydalana oladigan administrator hisoblarini boshqaring.",
+    "add": "Administrator qo'shish",
+    "forbiddenTitle": "Bu sahifaga kirish huquqingiz yo'q",
+    "forbiddenDescription": "Faqat superadministrator yangi administrator yaratishi mumkin.",
+    "formTitle": "Yangi administrator",
+    "formSubtitle": "Foydalanuvchi nomi va paroli bilan darhol kirishi mumkin.",
+    "passwordHint": "Kamida 8 belgi.",
+    "listTitle": "Administratorlar ro'yxati",
+    "fields": {
+      "username": "Foydalanuvchi nomi",
+      "email": "Email",
+      "password": "Parol",
+      "role": "Rol",
+      "roleHint": "Faqat oddiy administrator yaratiladi. Superadministrator yagona."
+    },
+    "roles": {
+      "super_admin": "Superadministrator",
+      "admin": "Administrator"
+    },
+    "table": {
+      "username": "Foydalanuvchi nomi",
+      "email": "Email",
+      "role": "Rol",
+      "createdAt": "Yaratilgan sana"
+    },
+    "empty": "Hali administrator yo'q.",
+    "loading": "Administratorlar yuklanmoqda...",
+    "error": "Administratorlar yuklanmadi.",
+    "toasts": {
+      "created": "Administrator yaratildi",
+      "createFailed": "Administrator yaratilmadi"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Tizimga kirgan administrator haqida ma'lumot.",
+    "id": "Administrator ID",
+    "username": "Foydalanuvchi nomi",
+    "email": "Email",
+    "role": "Rol",
+    "createdAt": "Ro'yxatga olingan sana",
+    "loading": "Profil yuklanmoqda..."
+  },
+  "fields": {
+    "id": "ID",
+    "createdAt": "Yaratilgan sana",
+    "username": "Foydalanuvchi nomi",
+    "password": "Parol",
+    "fullName": "Ism va familiya",
+    "motherName": "Onasining ismi",
+    "heir": "Merosxor / foydalanuvchi",
+    "passportNumber": "Pasport raqami",
+    "birthDate": "Tug'ilgan sana",
+    "secretQuestion": "Maxfiy savol",
+    "secretAnswer": "Maxfiy javob",
+    "email": "Email",
+    "pinCode": "PIN kodi",
+    "phone": "Telefon",
+    "inviter": "Taklif qilgan",
+    "product": "Mahsulot",
+    "address": "Manzil",
+    "postalIndex": "Pochta indeksi",
+    "officialSite": "Rasmiy sayt",
+    "registrationDate": "Ro'yxatga olingan sana",
+    "amount": "Summa",
+    "currency": "Valyuta",
+    "image": "Rasm"
+  },
+  "validation": {
+    "required": "{field} maydoni majburiy",
+    "min": "{field} kamida {min} belgi bo'lishi kerak",
+    "max": "{field} eng ko'p {max} belgi bo'lishi mumkin",
+    "email": "To'g'ri email manzilini kiriting",
+    "url": "To'g'ri URL kiriting, masalan https://example.com",
+    "date": "YYYY-AA-GG formatidan foydalaning",
+    "phone": "Xalqaro formatdan foydalaning, masalan +905551234567",
+    "positive": "{field} 0 dan katta bo'lishi kerak",
+    "numeric": "{field} raqam bo'lishi kerak",
+    "digits": "{field} 4-12 raqamdan iborat bo'lishi kerak",
+    "imageRequired": "Iltimos, kamida bitta rasm yuklang",
+    "imageType": "Faqat rasm fayllariga ruxsat etiladi",
+    "imageSize": "Har bir rasm 10 MB dan kichik bo'lishi kerak",
+    "invalid": "Noto'g'ri {field}"
+  },
+  "errors": {
+    "generic": "Xatolik yuz berdi. Iltimos, qaytadan urining.",
+    "unauthorized": "Sessiyangiz tugadi. Iltimos, qaytadan kiring.",
+    "notFound": "So'ralgan yozuv topilmadi.",
+    "validationTitle": "Tekshiruvdan o'tmadi",
+    "network": "Serverga ulanib bo'lmadi. Ulanishingizni tekshiring."
+  }
+}

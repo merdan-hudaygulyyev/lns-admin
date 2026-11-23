@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, CircleUserRound } from "lucide-react";
+import { ChevronDown, CircleUserRound, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { getMe } from "../../api/services/auth";
@@ -11,6 +11,7 @@ import { LogoutButton } from "../LogoutButton/LogoutButton";
 
 export function ProfileDropdown() {
   const t = useTranslations("nav");
+  const admins = useTranslations("admins");
   const { data: admin } = useQuery({ queryKey: ["me"], queryFn: getMe });
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,13 +25,7 @@ export function ProfileDropdown() {
     return () => document.removeEventListener("mousedown", onPointerDown);
   }, [open]);
 
-  const initials = (admin?.fullName ?? "?")
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
+  const initials = admin?.username.slice(0, 2).toUpperCase() ?? "?";
 
   return (
     <div className="relative" ref={containerRef}>
@@ -50,8 +45,14 @@ export function ProfileDropdown() {
       {open && (
         <div className="absolute right-0 z-50 mt-2 w-64 rounded-xl border border-line bg-surface p-2 shadow-card">
           <div className="border-b border-line px-3 py-2">
-            <p className="truncate text-sm font-medium text-ink">{admin?.fullName ?? "..."}</p>
+            <p className="truncate text-sm font-medium text-ink">{admin?.username ?? "..."}</p>
             <p className="truncate text-xs text-muted">{admin?.email ?? "..."}</p>
+            {admin && (
+              <p className="mt-1 flex items-center gap-1 text-xs text-brand">
+                <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+                {admins(`roles.${admin.role}`)}
+              </p>
+            )}
           </div>
           <Link
             href={ROUTES.profile}

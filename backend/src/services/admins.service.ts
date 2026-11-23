@@ -20,13 +20,11 @@ export async function createAdmin(input: CreateAdminInput): Promise<AdminDto> {
     throw AppError.conflict("Email already in use", { email: "Already in use" });
   }
 
-  const passwordHash = await hashPassword(input.password);
   const admin = await adminsRepository.createAdmin({
     email: input.email,
     username: input.username,
-    passwordHash,
-    fullName: input.fullName || input.username,
-    role: input.role,
+    passwordHash: await hashPassword(input.password),
+    role: "admin",
   });
 
   return adminsRepository.toAdminDto(admin);

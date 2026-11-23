@@ -1,12 +1,11 @@
 import { api } from "../axiosInstance";
-import type { Admin, AdminRole, ApiResponse } from "../../types";
+import type { Admin, ApiResponse } from "../../types";
 
 export interface CreateAdminValues {
   username: string;
   email: string;
   password: string;
-  role: AdminRole;
-  fullName?: string;
+  role: "admin";
 }
 
 export async function getAdmins(): Promise<Admin[]> {

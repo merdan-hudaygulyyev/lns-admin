@@ -35,5 +35,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/(tk|ru|tm)/:path*", "/((?!api|_next|_vercel|favicon.ico|.*\\..*).*)"],
+  matcher: ["/", "/(tk|ru|tm|uz)/:path*", "/((?!api|_next|_vercel|favicon.ico|.*\\..*).*)"],
 };
