@@ -1,7 +1,6 @@
 {
   "common": {
     "appName": "LNS Admin",
-    "adminPanel": "Yönetim paneli",
     "back": "Geri",
     "cancel": "İptal",
     "delete": "Sil",
@@ -31,7 +30,6 @@
     "section": "Çalışma alanı"
   },
   "login": {
-    "title": "Tekrar hoş geldiniz",
     "subtitle": "LNS üyelerini yönetmek için giriş yapın.",
     "username": "Kullanıcı adı veya e-posta",
     "password": "Şifre",
@@ -196,15 +194,12 @@
     "forbiddenTitle": "Bu sayfaya erişim izniniz yok",
     "forbiddenDescription": "Yalnızca süper yöneticiler yeni yönetici oluşturabilir.",
     "formTitle": "Yeni yönetici",
-    "formSubtitle": "Kullanıcı adı ve şifresiyle hemen giriş yapabilir.",
-    "passwordHint": "En az 8 karakter.",
     "listTitle": "Yönetici listesi",
     "fields": {
       "username": "Kullanıcı adı",
       "email": "E-posta",
       "password": "Şifre",
-      "role": "Rol",
-      "roleHint": "Yalnızca standart yönetici oluşturulabilir. Süper yönetici benzersizdir."
+      "role": "Rol"
     },
     "roles": {
       "super_admin": "Süper yönetici",

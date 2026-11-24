@@ -69,27 +69,55 @@ function escapeLike(value: string): string {
 function buildWhere(filters: MemberListFilters): { clause: string; params: unknown[] } {
   const conditions: string[] = [];
   const params: unknown[] = [];
+  const escape = "ESCAPE '\\'";
 
   if (filters.search) {
-    const termIndex = params.push(`%${escapeLike(filters.search)}%`);
-    const escape = "ESCAPE '\\'";
-    const fields = ["username", "full_name", "email", "phone", "inviter", "product"];
-    const ors = fields.map((field) => `${field} ILIKE $${termIndex} ${escape}`);
-    if (filters.passportHash) {
-      const hashIndex = params.push(filters.passportHash);
-      ors.push(`passport_hash = $${hashIndex}`);
+    const fields = [
+      "username",
+      "full_name",
+      "mother_name",
+      "heir",
+      "email",
+      "phone",
+      "inviter",
+      "product",
+      "address",
+      "postal_index",
+      "official_site",
+    ];
+
+    // Each whitespace-separated token must match at least one text column, so
+    // a partial term works and multi-word searches stay predictable.
+    const tokenGroups = filters.search
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((token) => {
+        const termIndex = params.push(`%${escapeLike(token)}%`);
+        const ors = fields.map((field) => `${field} ILIKE $${termIndex} ${escape}`);
+        return `(${ors.join(" OR ")})`;
+      });
+
+    if (tokenGroups.length) {
+      let searchClause = `(${tokenGroups.join(" AND ")})`;
+      // Passport numbers are encrypted, so only an exact blind-index lookup works.
+      if (filters.passportHash) {
+        const hashIndex = params.push(filters.passportHash);
+        searchClause = `(${searchClause} OR passport_hash = $${hashIndex})`;
+      }
+      conditions.push(searchClause);
     }
-    conditions.push(`(${ors.join(" OR ")})`);
   }
 
   if (filters.currency) {
     conditions.push(`currency = $${params.push(filters.currency)}`);
   }
   if (filters.product) {
-    conditions.push(`LOWER(product) = LOWER($${params.push(filters.product)})`);
+    const termIndex = params.push(`%${escapeLike(filters.product)}%`);
+    conditions.push(`product ILIKE $${termIndex} ${escape}`);
   }
   if (filters.inviter) {
-    conditions.push(`LOWER(inviter) = LOWER($${params.push(filters.inviter)})`);
+    const termIndex = params.push(`%${escapeLike(filters.inviter)}%`);
+    conditions.push(`inviter ILIKE $${termIndex} ${escape}`);
   }
   if (filters.amountMin !== undefined) {
     conditions.push(`amount >= $${params.push(filters.amountMin)}`);

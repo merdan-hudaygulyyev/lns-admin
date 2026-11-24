@@ -2,7 +2,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import * as yup from "yup";
@@ -90,13 +89,11 @@ export function AddAdminModal({ open, onClose, onCreated }: AddAdminModalProps) 
             loading={mutation.isPending}
             loadingText={common("creating")}
           >
-            <ShieldCheck className="h-4 w-4" aria-hidden="true" />
             {common("create")}
           </Button>
         </>
       }
     >
-      <p className="mb-4 text-sm text-muted">{t("formSubtitle")}</p>
       <form id="add-admin-form" onSubmit={formik.handleSubmit} noValidate className="space-y-4">
         <Input
           label={t("fields.username")}
@@ -121,7 +118,6 @@ export function AddAdminModal({ open, onClose, onCreated }: AddAdminModalProps) 
           label={t("fields.password")}
           name="password"
           type="password"
-          hint={t("passwordHint")}
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -138,7 +134,6 @@ export function AddAdminModal({ open, onClose, onCreated }: AddAdminModalProps) 
             error={fieldError("role")}
             options={[{ value: "admin", label: t("roles.admin") }]}
           />
-          <p className="mt-1 text-xs text-muted">{t("fields.roleHint")}</p>
         </div>
       </form>
     </Modal>

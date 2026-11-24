@@ -216,12 +216,18 @@ export async function create(
 export async function list(
   filters: MemberListFilters,
 ): Promise<{ data: MemberDto[]; meta: PaginationMeta }> {
+  const normalize = (value?: string) => value?.trim().replace(/\s+/g, " ") || undefined;
+  const search = normalize(filters.search);
   const passportHash =
-    filters.search && filters.search.trim().length >= 3
-      ? blindIndexPassport(filters.search)
-      : undefined;
+    search && search.length >= 3 ? blindIndexPassport(search) : undefined;
 
-  const { rows, total } = await membersRepository.findMany({ ...filters, passportHash });
+  const { rows, total } = await membersRepository.findMany({
+    ...filters,
+    search,
+    product: normalize(filters.product),
+    inviter: normalize(filters.inviter),
+    passportHash,
+  });
   return {
     data: rows.map((row) => toMemberDto(row, false)),
     meta: {

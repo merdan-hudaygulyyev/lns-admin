@@ -13,7 +13,6 @@ interface TopNavProps {
 }
 
 export function TopNav({ onOpenMobile }: TopNavProps) {
-  const common = useTranslations("common");
   const t = useTranslations("nav");
 
   return (
@@ -27,10 +26,6 @@ export function TopNav({ onOpenMobile }: TopNavProps) {
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
-        <div>
-          <p className="text-sm font-semibold text-ink">{common("appName")}</p>
-          <p className="hidden text-xs text-muted sm:block">{common("adminPanel")}</p>
-        </div>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">

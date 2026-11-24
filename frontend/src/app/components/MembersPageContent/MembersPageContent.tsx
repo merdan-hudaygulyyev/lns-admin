@@ -1,7 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, ChevronLeft, ChevronRight, Plus, Search, SearchX, SlidersHorizontal } from "lucide-react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { AlertCircle, ChevronLeft, ChevronRight, Plus, Search, SearchX, SlidersHorizontal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { getMembers } from "../../api/services/members";
@@ -21,8 +21,9 @@ export function MembersPageContent() {
   const common = useTranslations("common");
 
   const [searchInput, setSearchInput] = useState("");
-  const search = useDebounce(searchInput, 400);
+  const search = useDebounce(searchInput.trim(), 250);
   const [filters, setFilters] = useState<FilterValues>(EMPTY_FILTERS);
+  const debouncedFilters = useDebounce(filters, 250);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [sortBy, setSortBy] = useState<NonNullable<MemberListParams["sortBy"]>>("created_at");
@@ -31,13 +32,15 @@ export function MembersPageContent() {
   const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
 
   const params = useMemo<MemberListParams>(
-    () => ({ page, limit, search: search || undefined, sortBy, order, ...filters }),
-    [page, limit, search, sortBy, order, filters],
+    () => ({ page, limit, search: search || undefined, sortBy, order, ...debouncedFilters }),
+    [page, limit, search, sortBy, order, debouncedFilters],
   );
 
   const membersQuery = useQuery({
     queryKey: ["members", params],
     queryFn: () => getMembers(params),
+    // Keep rows visible while the next search/filter request is in flight.
+    placeholderData: keepPreviousData,
   });
 
   const members = membersQuery.data?.data ?? [];
@@ -83,8 +86,21 @@ export function MembersPageContent() {
               }}
               placeholder={t("searchPlaceholder")}
               aria-label={common("search")}
-              className="input pl-10"
+              className="input pl-10 pr-10 [&::-webkit-search-cancel-button]:hidden"
             />
+            {searchInput && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchInput("");
+                  setPage(1);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-muted hover:text-ink"
+                aria-label={common("reset")}
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
 
           <button
@@ -136,7 +152,10 @@ export function MembersPageContent() {
         )}
       </div>
 
-      <div className="card overflow-hidden">
+      <div
+        className={`card overflow-hidden transition-opacity ${membersQuery.isFetching ? "opacity-70" : ""}`}
+        aria-busy={membersQuery.isFetching}
+      >
         {membersQuery.isPending ? (
           <div className="space-y-3 p-5">
             {Array.from({ length: 6 }).map((_, index) => (

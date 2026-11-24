@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { getErrorMessage } from "../../api/axiosInstance";
 import { login } from "../../api/services/auth";
 import { Button, Input } from "../../compLibrary";
+import { BrandLogo } from "../BrandLogo/BrandLogo";
 import { useRouter } from "../../../i18n/navigation";
 import { ROUTES } from "../../utils/routes";
 
@@ -50,11 +51,7 @@ export function LoginForm() {
   return (
     <div className="w-full max-w-md animate-fade-in">
       <div className="mb-8 text-center">
-        <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-brand text-lg font-bold text-white">
-          L
-        </span>
-        <h1 className="mt-5 text-2xl font-semibold text-ink">{t("title")}</h1>
-        {/* <p className="mt-2 text-sm text-muted">{t("subtitle")}</p> */}
+        <BrandLogo className="mx-auto h-16 w-[212px]" alt={common("appName")} />
       </div>
 
       <form onSubmit={formik.handleSubmit} className="card space-y-5 p-6 sm:p-8" noValidate>

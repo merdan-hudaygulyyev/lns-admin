@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../../../i18n/navigation";
 import { useCurrentAdmin } from "../../hooks/useCurrentAdmin";
 import { ROUTES } from "../../utils/routes";
+import { BrandLogo } from "../BrandLogo/BrandLogo";
 import { LogoutButton } from "../LogoutButton/LogoutButton";
 
 interface SidebarProps {
@@ -53,13 +54,13 @@ export function Sidebar({
       >
         <div className="flex h-16 items-center justify-between gap-2 border-b border-line px-5">
           <Link href={ROUTES.members} className="flex items-center gap-3 overflow-hidden">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand text-sm font-bold text-white">
-              L
-            </span>
-            {(!collapsed || mobileOpen) && (
-              <span className="whitespace-nowrap text-base font-semibold text-ink">
-                {common("appName")}
-              </span>
+            {!collapsed || mobileOpen ? (
+              <>
+                <BrandLogo className="h-9 w-[119px]" alt={common("appName")} />
+                <span className="sr-only">{common("appName")}</span>
+              </>
+            ) : (
+              <BrandLogo variant="mark" className="h-9 w-9" alt={common("appName")} />
             )}
           </Link>
           <button
@@ -72,11 +73,7 @@ export function Sidebar({
           </button>
         </div>
 
-        <p className={`mt-6 px-5 text-[10px] font-semibold uppercase tracking-wider text-muted ${collapsed ? "lg:hidden" : ""}`}>
-          {t("section")}
-        </p>
-
-        <nav className="mt-2 flex-1 space-y-1 px-3" aria-label={t("section")}>
+        <nav className="mt-6 flex-1 space-y-1 px-3" aria-label={t("section")}>
           {items.map(({ href, label, icon: Icon }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Plus, SearchX, ShieldAlert } from "lucide-react";
+import { AlertCircle, SearchX, ShieldAlert } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { getAdmins } from "../../api/services/admins";
@@ -50,7 +50,6 @@ export function AdminsContent() {
           <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
         </div>
         <Button type="button" onClick={() => setAddOpen(true)}>
-          <Plus className="h-4 w-4" aria-hidden="true" />
           {t("add")}
         </Button>
       </header>

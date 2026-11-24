@@ -1,7 +1,6 @@
 {
   "common": {
     "appName": "LNS Admin",
-    "adminPanel": "Boshqaruv paneli",
     "back": "Orqaga",
     "cancel": "Bekor qilish",
     "delete": "O'chirish",
@@ -31,7 +30,6 @@
     "section": "Ish maydoni"
   },
   "login": {
-    "title": "Xush kelibsiz",
     "subtitle": "LNS a'zolarini boshqarish uchun kiring.",
     "username": "Foydalanuvchi nomi yoki email",
     "password": "Parol",
@@ -196,15 +194,12 @@
     "forbiddenTitle": "Bu sahifaga kirish huquqingiz yo'q",
     "forbiddenDescription": "Faqat superadministrator yangi administrator yaratishi mumkin.",
     "formTitle": "Yangi administrator",
-    "formSubtitle": "Foydalanuvchi nomi va paroli bilan darhol kirishi mumkin.",
-    "passwordHint": "Kamida 8 belgi.",
     "listTitle": "Administratorlar ro'yxati",
     "fields": {
       "username": "Foydalanuvchi nomi",
       "email": "Email",
       "password": "Parol",
-      "role": "Rol",
-      "roleHint": "Faqat oddiy administrator yaratiladi. Superadministrator yagona."
+      "role": "Rol"
     },
     "roles": {
       "super_admin": "Superadministrator",

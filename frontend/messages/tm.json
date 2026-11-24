@@ -1,7 +1,6 @@
 {
   "common": {
     "appName": "LNS Admin",
-    "adminPanel": "Dolandyryş paneli",
     "back": "Yza",
     "cancel": "Ýatyr",
     "delete": "Poz",
@@ -31,7 +30,6 @@
     "section": "Iş meýdany"
   },
   "login": {
-    "title": "Gaýtadan hoş geldiňiz",
     "subtitle": "LNS agzalaryny dolandyrmak üçin giriň.",
     "username": "Ulanyjy ady ýa-da email",
     "password": "Parol",
@@ -196,15 +194,12 @@
     "forbiddenTitle": "Bu sahypa giriş ygtyýaryňyz ýok",
     "forbiddenDescription": "Diňe baş dolandyryjy täze dolandyryjy döredip biler.",
     "formTitle": "Täze dolandyryjy",
-    "formSubtitle": "Ulanyjy ady we paroly bilen derrew giriş edip biler.",
-    "passwordHint": "Azyndan 8 harp.",
     "listTitle": "Dolandyryjylaryň sanawy",
     "fields": {
       "username": "Ulanyjy ady",
       "email": "E-poçta",
       "password": "Parol",
-      "role": "Orny",
-      "roleHint": "Diňe adaty dolandyryjy döredilip bilner. Baş dolandyryjy ýeke-täk."
+      "role": "Orny"
     },
     "roles": {
       "super_admin": "Baş dolandyryjy",
